@@ -1,11 +1,5 @@
 import Store from 'electron-store'
-type SaveRecord = {
-  id: string
-  gameId: string
-  filePath: string
-  createdAt: number
-  comment: string
-}
+import { SaveRecord } from '../../type/record'
 
 export const saveFileRecord = (saveRecord: SaveRecord) => {
   const store = new Store()

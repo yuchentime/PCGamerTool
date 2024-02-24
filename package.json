@@ -24,6 +24,7 @@
     "@electron-toolkit/preload": "^3.0.0",
     "@electron-toolkit/utils": "^3.0.0",
     "electron-store": "^8.1.0",
+    "react-icons": "^5.0.1",
     "recursive-copy": "^2.0.14",
     "uuid": "^9.0.1"
   },

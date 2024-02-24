@@ -16,12 +16,12 @@ function App(): JSX.Element {
     {
       id: '1001',
       name: 'Elden Ring',
-      thumbnail: 'http://www.w3.org/2000/svg'
+      thumbnail: 'https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg'
     },
     {
       id: '1002',
       name: 'Nioh 2',
-      thumbnail: 'http://www.w3.org/1000/svg'
+      thumbnail: 'http://img1.gamersky.com/image2020/04/20200423_syj_380_3/image003.jpg'
     }
   ]
 
