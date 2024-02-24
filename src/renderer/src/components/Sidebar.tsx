@@ -1,4 +1,3 @@
-import { type } from 'os'
 import React from 'react'
 
 type Game = {
@@ -8,12 +7,13 @@ type Game = {
 }
 
 const SideBar = ({ gameList }: { gameList: Game[] }) => {
+  const [activeId, setActiveId] = React.useState(gameList.length > 0 ? gameList[0].id : '')
   return (
     <div>
-      <ul className="menu bg-base-200 w-56 rounded-box">
+      <ul className="menu w-72 text-base-content">
         {gameList.map((game) => (
           <li id={game.id}>
-            <a>
+            <a class={activeId === game.id ? 'active' : ''} onClick={() => setActiveId(game.id)}>
               <svg
                 xmlns={game.thumbnail}
                 className="h-5 w-5"
