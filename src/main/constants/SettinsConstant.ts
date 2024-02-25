@@ -5,3 +5,4 @@ export const RECORDS_PREFIX = 'records:'
 export const SATISTICS_PREFIX = 'satistics:'
 export const NOTES_PREFIX = 'notes:'
 
+export const SAVE_SHORTCURT = 'save_shortcut'

@@ -1,7 +1,6 @@
 import React from 'react'
-import SideBar from './components/Sidebar'
 import Container from './components/Container'
-import { ipcMain } from 'electron'
+import SideBar from './components/Sidebar'
 
 function App(): JSX.Element {
   const [tabActive, setTabActive] = React.useState('records')
@@ -21,13 +20,8 @@ function App(): JSX.Element {
 
   window.addEventListener('keydown', (e) => {
     if (e.key === 'F5') {
-      window.electron.ipcRenderer
-        .invoke('createNewSaveFile', 'Elden Ring', 'test')
-        .then((result) => {
-          if (result === 'ok') {
-            setToast(true)
-          }
-        })
+      window.electron.ipcRenderer.invoke('createNewSaveFile', 'Elden Ring')
+      setToast(true)
     }
   })
 

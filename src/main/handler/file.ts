@@ -6,25 +6,28 @@ import * as SettingStore from '../store/settings'
 const FileHandler = {
   createNewSaveFile: (gameId: string, comment: string): Promise<string> => {
     return new Promise((resolve, reject) => {
-      try {
-        FileUtil.copyFileToFoler(
-          SettingStore.getOriginalFilePath(gameId),
-          SettingStore.getTargetSaveFolder(gameId)
-        )
-      } catch (err) {
-        console.error(err)
-        reject('failed')
-      }
-      // generate a new save record
-      const saveFileRecord = {
-        id: uuidv4(),
-        gameId: gameId,
-        filePath: SettingStore.getTargetSaveFolder(gameId),
-        createdAt: Date.now(),
-        comment: comment
-      }
-      RecordStore.saveFileRecord(saveFileRecord)
-      resolve('ok')
+      FileUtil.copyFileToFoler(
+        SettingStore.getOriginalFilePath(gameId),
+        SettingStore.getTargetSaveFolder(gameId)
+      )
+        ?.then((res) => {
+          if (res === 'ok') {
+            // generate a new save record
+            const saveFileRecord = {
+              id: uuidv4(),
+              gameId: gameId,
+              filePath: SettingStore.getTargetSaveFolder(gameId),
+              createdAt: Date.now(),
+              comment: comment
+            }
+            RecordStore.saveFileRecord(saveFileRecord)
+            resolve('ok')
+          }
+        })
+        .catch((err) => {
+          console.error(err)
+          reject('failed')
+        })
     })
   }
 }

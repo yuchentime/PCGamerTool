@@ -22,6 +22,10 @@ const Setting = ({ props }) => {
     setBackupDirectory(backupDirectory)
   }
 
+  const setSaveShortcutFn = async  (shortcut: string) => {
+    await window.electron.ipcRenderer.invoke('setOrinalFilePath', shortcut)
+  }
+
   return (
     <>
       <div className="flex items-center">
@@ -38,7 +42,7 @@ const Setting = ({ props }) => {
           更改目录
         </button>
       </div>
-      <div className="flex items-center mt-10">
+      {/* <div className="flex items-center mt-10">
         <h4 className="mr-10 font-bold">手动存档快捷键</h4>
         <input
           type="text"
@@ -46,10 +50,13 @@ const Setting = ({ props }) => {
           value={saveShortcut}
           className="input input-bordered input-sm w-1/5 max-w-xs"
           onFocus={(e) => {
-            
+            window.addEventListener('keydown', (e) => {
+              setSaveShortcutFn(saveShortcut + '+' + e.key)
+              setSaveShortcut((prev) => prev + '+' + e.key)
+            })
           }}
         />
-      </div>
+      </div> */}
     </>
   )
 }
