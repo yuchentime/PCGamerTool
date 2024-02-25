@@ -24,18 +24,22 @@ const FileHandler = {
         })
     })
   },
-  setTargetSaveFolder: (gameId: string, targetSaveFolder: string): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      try {
-        if (!fs.existsSync(targetSaveFolder)) {
-          fs.mkdirSync(targetSaveFolder)
-        }
-      } catch (err) {
-        console.error(err)
-        reject('failed')
-      }
-      SettingStore.setTargetSaveFolder(gameId, targetSaveFolder)
-      resolve('ok')
+  setTargetSaveFolder: (gameId: string): Promise<string> => {
+    return new Promise((resolve) => {
+      dialog
+        .showOpenDialog({
+          title: '选择存档文件',
+          buttonLabel: '选择',
+          properties: ['openDirectory']
+        })
+        .then((res) => {
+          const saveFileDirectory = res.filePaths[0]
+          SettingStore.setTargetSaveFolder(gameId, saveFileDirectory)
+          resolve(saveFileDirectory)
+        })
+        .catch(() => {
+          resolve('')
+        })
     })
   },
   createNewSaveFile: (gameId: string, comment: string): Promise<string> => {

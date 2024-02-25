@@ -33,7 +33,7 @@ const Records = ({ props }) => {
           <tbody>
             {recordList.map((record) => {
               return (
-                <tr>
+                <tr key={record.id}>
                   <th>
                     <label>
                       <input type="checkbox" className="checkbox checkbox-xs" />

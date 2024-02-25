@@ -4,14 +4,6 @@ import Container from './components/Container'
 
 function App(): JSX.Element {
   const [tabActive, setTabActive] = React.useState('records')
-  const setOriginalFile = async () => {
-    const filePath = await window.electron.ipcRenderer.invoke('setOrinalFilePath', 'Elden Ring')
-  }
-  const ipcHandleSave = async () => {
-    const res = await window.electron.ipcRenderer.invoke('saveFile', 'Elden Ring')
-    console.log(res)
-  }
-
   const gameList = [
     {
       id: '1001',
