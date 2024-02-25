@@ -3,6 +3,12 @@ import React from 'react'
 const Setting = ({ props }) => {
   const [originalFilePosition, setOriginalFilePosition] = React.useState('')
   const [backupDirectory, setBackupDirectory] = React.useState('')
+
+  window.electron.ipcRenderer.invoke('getAllSettings', 'Elden Ring').then((properties) => {
+    setOriginalFilePosition(properties.originalFilePath)
+    setBackupDirectory(properties.targetSaveFolder)
+  })
+  
   const setOriginalFilePositionFn = async () => {
     const filePath = await window.electron.ipcRenderer.invoke('setOrinalFilePath', 'Elden Ring')
     setOriginalFilePosition(filePath)

@@ -1,9 +1,8 @@
 import { RiArrowGoBackFill } from 'react-icons/ri'
-import { SaveRecord } from '../../../types/global'
+
 
 const Records = ({ props }) => {
   const { data } = props
-  const gameRecordList = data as SaveRecord[]
   const recordList = [
     {
       id: '1001',

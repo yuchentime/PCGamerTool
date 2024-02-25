@@ -1,6 +1,13 @@
 import { dialog } from 'electron'
 import * as SettingStore from '../store/settings'
 const SettingsHandler = {
+  getAllSettings: (gameId: string) => {
+    return new Promise((resolve) => {
+      const originalFilePath = SettingStore.getOriginalFilePath(gameId)
+      const targetSaveFolder = SettingStore.getTargetSaveFolder(gameId)
+      resolve({ originalFilePath, targetSaveFolder })
+    })
+  },
   setOrinalFilePath: (gameId: string): Promise<string> => {
     return new Promise((resolve) => {
       dialog
