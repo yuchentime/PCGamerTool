@@ -1,9 +1,11 @@
 import React from 'react'
 import SideBar from './components/Sidebar'
 import Container from './components/Container'
+import { ipcMain } from 'electron'
 
 function App(): JSX.Element {
   const [tabActive, setTabActive] = React.useState('records')
+  const [toast, setToast] = React.useState(false)
   const gameList = [
     {
       id: '1001',
@@ -17,8 +19,34 @@ function App(): JSX.Element {
     }
   ]
 
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'F5') {
+      window.electron.ipcRenderer
+        .invoke('createNewSaveFile', 'Elden Ring', 'test')
+        .then((result) => {
+          if (result === 'ok') {
+            setToast(true)
+          }
+        })
+    }
+  })
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      setToast(false)
+    }, 1500)
+  }, [toast])
+
   return (
     <div className="flex h-screen w-screen border-t border-gray-200 p-1">
+      {toast && (
+        <div className="toast toast-top toast-center top-24 z-10">
+          <div className="alert alert-info">
+            <span>操作成功！</span>
+          </div>
+        </div>
+      )}
+
       <div className="border-r border-gray-200 px-1 pt-10 w-72 flex justify-center item-center">
         <SideBar key="sideBar" gameList={gameList} />
       </div>

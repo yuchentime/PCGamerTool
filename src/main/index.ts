@@ -1,8 +1,9 @@
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
-import { BrowserWindow, app, ipcMain, shell } from 'electron'
+import { BrowserWindow, app, globalShortcut, ipcMain, shell } from 'electron'
 import { join } from 'path'
 import icon from '../../resources/icon.png?asset'
 import SettingsHandler from './handler/settings'
+import FileHandler from './handler/file'
 
 function createWindow(): void {
   // Create the browser window.
@@ -72,8 +73,13 @@ app.on('window-all-closed', () => {
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
 
+const handlerList = {
+  ...FileHandler,
+  ...SettingsHandler
+}
+
 const registerHandler = () => {
-  Object.entries(SettingsHandler).forEach(([name, handler]) => {
+  Object.entries(handlerList).forEach(([name, handler]) => {
     // @ts-ignore
     ipcMain.handle(name, handler)
   })

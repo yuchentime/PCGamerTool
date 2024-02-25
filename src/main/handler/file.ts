@@ -1,4 +1,4 @@
-import { uuidv4 } from 'uuid'
+import { v4 as uuidv4 } from 'uuid'
 import * as RecordStore from '../store/records'
 import * as FileUtil from '../util/file'
 import * as SettingStore from '../store/settings'

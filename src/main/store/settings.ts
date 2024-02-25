@@ -1,5 +1,5 @@
 import Store from 'electron-store'
-import { SAVE_FILE_PREFIX, TARGET_SAVE_FOLDER_PREFIX } from '../constants/GameConstant'
+import { SAVE_FILE_PREFIX, TARGET_SAVE_FOLDER_PREFIX } from '../constants/SettinsConstant'
 
 const store = new Store()
 
