@@ -1,5 +1,6 @@
 {
   "extends": "@electron-toolkit/tsconfig/tsconfig.web.json",
+  // 指定需要编译处理的文件
   "include": [
     "src/renderer/src/env.d.ts",
     "src/renderer/src/**/*",

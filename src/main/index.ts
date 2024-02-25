@@ -2,7 +2,7 @@ import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import { BrowserWindow, app, ipcMain, shell } from 'electron'
 import { join } from 'path'
 import icon from '../../resources/icon.png?asset'
-import FileHandler from './handler/file'
+import SettingsHandler from './handler/settings'
 
 function createWindow(): void {
   // Create the browser window.
@@ -73,7 +73,7 @@ app.on('window-all-closed', () => {
 // code. You can also put them in separate files and require them here.
 
 const registerHandler = () => {
-  Object.entries(FileHandler).forEach(([name, handler]) => {
+  Object.entries(SettingsHandler).forEach(([name, handler]) => {
     // @ts-ignore
     ipcMain.handle(name, handler)
   })
