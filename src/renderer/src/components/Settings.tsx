@@ -22,8 +22,8 @@ const Setting = ({ props }) => {
     setBackupDirectory(backupDirectory)
   }
 
-  const setSaveShortcutFn = async  (shortcut: string) => {
-    await window.electron.ipcRenderer.invoke('setOrinalFilePath', shortcut)
+  const setSaveShortcutFn = async  () => {
+    await window.electron.ipcRenderer.invoke('testHanlde')
   }
 
   return (
@@ -42,6 +42,10 @@ const Setting = ({ props }) => {
           更改目录
         </button>
       </div>
+
+      <button className="btn btn-sm" onClick={setSaveShortcutFn}>
+        手打
+      </button>
       {/* <div className="flex items-center mt-10">
         <h4 className="mr-10 font-bold">手动存档快捷键</h4>
         <input

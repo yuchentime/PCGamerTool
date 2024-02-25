@@ -4,8 +4,14 @@ import {
   TARGET_SAVE_FOLDER_PREFIX,
   SAVE_SHORTCURT
 } from '../constants/SettinsConstant'
+import { app } from 'electron'
 
-const store = new Store()
+export const store = new Store({
+  name: 'settings',
+  defaults: {
+    targetSaveFolder: app.getAppPath()
+  }
+})
 
 export const getOriginalFilePath = (gameId: string): string => {
   if (store.has(SAVE_FILE_PREFIX + gameId)) {
@@ -37,5 +43,5 @@ export const getGlobalSaveShortcut = (): string => {
   if (store.has(SAVE_SHORTCURT)) {
     return String(store.get(SAVE_SHORTCURT))
   }
-  return 'F5';
+  return 'F5'
 }

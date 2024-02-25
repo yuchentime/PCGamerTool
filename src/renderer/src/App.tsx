@@ -18,13 +18,6 @@ function App(): JSX.Element {
     }
   ]
 
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'F5') {
-      window.electron.ipcRenderer.invoke('createNewSaveFile', 'Elden Ring')
-      setToast(true)
-    }
-  })
-
   React.useEffect(() => {
     setTimeout(() => {
       setToast(false)

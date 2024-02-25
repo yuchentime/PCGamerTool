@@ -1,12 +1,16 @@
-import Store from 'electron-store'
-import { electronApp, is, optimizer } from '@electron-toolkit/utils'
-import { BrowserWindow, app, globalShortcut, ipcMain, shell } from 'electron'
+import { electronApp, ipcHelper, is, optimizer } from '@electron-toolkit/utils'
+import { BrowserWindow, app, globalShortcut, ipcMain, ipcRenderer, shell } from 'electron'
 import { join } from 'path'
 import icon from '../../resources/icon.png?asset'
-import SettingsHandler from './handler/settings'
 import FileHandler from './handler/file'
+import SettingsHandler from './handler/settings'
 import * as SettingStore from './store/settings'
-import { SAVE_FILE_PREFIX } from './constants/SettinsConstant'
+import Store from 'electron-store'
+import {
+  SAVE_FILE_PREFIX,
+  TARGET_SAVE_FOLDER_PREFIX,
+  SAVE_SHORTCURT
+} from './constants/SettinsConstant'
 
 function createWindow(): void {
   // Create the browser window.
@@ -91,7 +95,7 @@ const registerHandler = () => {
 }
 
 const registerShortcut = () => {
-  // globalShortcut.register(SettingStore.getGlobalSaveShortcut(), () => {
-  //   FileHandler.createNewSaveFile('Elden Ring', '')
-  // })
+  globalShortcut.register('F5', () => {
+    FileHandler.createNewSaveFile('Elden Ring', '')
+  })
 }
