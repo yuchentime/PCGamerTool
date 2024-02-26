@@ -4,7 +4,7 @@ import { join } from 'path'
 import icon from '../../resources/icon.png?asset'
 import FileHandler from './handler/file'
 import SettingsHandler from './handler/settings'
-import * as SettingStore from './store/settings'
+import * as SettingStore from './store'
 import Store from 'electron-store'
 import {
   SAVE_FILE_PREFIX,
@@ -58,9 +58,9 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  registerShortcut()
-
   registerHandler()
+
+  registerShortcut()
 
   createWindow()
 
@@ -96,6 +96,6 @@ const registerHandler = () => {
 
 const registerShortcut = () => {
   globalShortcut.register('F5', () => {
-    FileHandler.createNewSaveFile('Elden Ring', '')
+    handlerList.createNewSaveFile('Elden Ring', '')
   })
 }

@@ -1,13 +1,13 @@
 import { app, dialog } from 'electron'
 import { SAVE_FILE_PREFIX, TARGET_SAVE_FOLDER_PREFIX } from '../constants/SettinsConstant'
-import * as SettingStore from '../store/settings'
+import Stores from '../store/index'
 
 const SettingsHandler = {
   getAllSettings: (gameId: string) => {
     return new Promise((resolve) => {
-      const originalFilePath = SettingStore.store.get(SAVE_FILE_PREFIX + gameId)
+      const originalFilePath = Stores.settings.get(SAVE_FILE_PREFIX + gameId) || ''
       const targetSaveFolder =
-        SettingStore.store.get(TARGET_SAVE_FOLDER_PREFIX + gameId) || app.getAppPath()
+        Stores.settings.get(TARGET_SAVE_FOLDER_PREFIX + gameId) || app.getAppPath()
       resolve({ originalFilePath, targetSaveFolder })
     })
   },
@@ -21,7 +21,7 @@ const SettingsHandler = {
         })
         .then((res) => {
           const saveFilePath = res.filePaths[0]
-          SettingStore.store.set(SAVE_FILE_PREFIX + gameId, saveFilePath)
+          Stores.settings.set(SAVE_FILE_PREFIX + gameId, saveFilePath)
           resolve(saveFilePath)
         })
         .catch(() => {
@@ -39,7 +39,7 @@ const SettingsHandler = {
         })
         .then((res) => {
           const saveFileDirectory = res.filePaths[0]
-          SettingStore.store.set(TARGET_SAVE_FOLDER_PREFIX + gameId, saveFileDirectory)
+          Stores.settings.set(TARGET_SAVE_FOLDER_PREFIX + gameId, saveFileDirectory)
           resolve(saveFileDirectory)
         })
         .catch(() => {

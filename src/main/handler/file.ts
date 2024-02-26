@@ -1,17 +1,18 @@
+import { app } from 'electron'
 import { v4 as uuidv4 } from 'uuid'
 import { SAVE_FILE_PREFIX, TARGET_SAVE_FOLDER_PREFIX } from '../constants/SettinsConstant'
-import * as RecordStore from '../store/records'
-import * as SettingStore from '../store/settings'
+import Stores from '../store/index'
 import * as FileUtil from '../util/file'
-import { app } from 'electron'
 
 const FileHandler = {
   createNewSaveFile: (gameId: string, comment: string): Promise<string> => {
-    const originalFilePath: string = SettingStore.store.get(SAVE_FILE_PREFIX + gameId) || ''
-    const targetSaveFolder: string =
-      SettingStore.store.get(TARGET_SAVE_FOLDER_PREFIX + gameId) || app.getAppPath()
+    const originalFilePath = Stores.settings.get(SAVE_FILE_PREFIX + gameId) || ''
+    const targetSaveFolder =
+      Stores.settings.get(TARGET_SAVE_FOLDER_PREFIX + gameId) || app.getAppPath()
+    console.log('originalFilePath: ', originalFilePath)
+    console.log('targetSaveFolder: ', targetSaveFolder)
     return new Promise((resolve, reject) => {
-      FileUtil.copyFileToFoler(originalFilePath, targetSaveFolder)
+      FileUtil.copyFileToFoler(String(originalFilePath), String(targetSaveFolder))
         ?.then((res) => {
           if (res === 'ok') {
             // generate a new save record
@@ -22,7 +23,7 @@ const FileHandler = {
               createdAt: Date.now(),
               comment: comment
             }
-            RecordStore.saveFileRecord(saveFileRecord)
+            // TODO
             resolve('ok')
           }
         })
