@@ -6,10 +6,14 @@ const settingStore = new ElectronStore({
 const recordStore = new ElectronStore({
   name: 'records'
 })
+const gameStore = new ElectronStore({
+  name: 'games'
+})
 
 const Store = {
   settings: settingStore,
-  records: recordStore
+  records: recordStore,
+  games: gameStore,
 }
 
 export default Store

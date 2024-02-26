@@ -11,7 +11,6 @@ declare global {
   }
 
   export type Game = {
-    id: string
     name: string
     thumbnail?: string
   }

@@ -9,23 +9,14 @@ function App(): JSX.Element {
   const [selectedGameId, setSelectedGameId] = React.useState('')
 
   React.useEffect(() => {
-    const games = [
-      {
-        id: '1001',
-        name: 'Elden Ring',
-        thumbnail: 'https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg'
-      },
-      {
-        id: '1002',
-        name: 'Nioh 2',
-        thumbnail: 'http://img1.gamersky.com/image2020/04/20200423_syj_380_3/image003.jpg'
-      }
-    ]
-    setGameList(games)
+    window.electron.ipcRenderer.invoke('getGameList').then((games) => {
+      console.log('games: ', games)
+      setGameList(games)
 
-    if (games.length > 0) {
-      setSelectedGameId(games[0].id)
-    }
+      if (games.length > 0) {
+        setSelectedGameId(games[0].id)
+      }
+    })
   }, [])
 
   React.useEffect(() => {

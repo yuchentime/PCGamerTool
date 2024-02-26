@@ -1,11 +1,10 @@
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
-import { BrowserWindow, app, globalShortcut, ipcMain, shell } from 'electron'
+import { exec } from 'child_process'
+import { BrowserWindow, app, globalShortcut, ipcMain, shell, Menu } from 'electron'
 import { join } from 'path'
 import icon from '../../resources/icon.png?asset'
 import FileHandler from './handler/file'
 import SettingsHandler from './handler/settings'
-import { exec } from 'child_process'
-import { stdout } from 'process'
 
 function createWindow(): void {
   // Create the browser window.
@@ -59,12 +58,32 @@ app.whenReady().then(() => {
 
   createWindow()
 
+  const menu = Menu.buildFromTemplate(menuBar)
+  Menu.setApplicationMenu(menu)
+
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 })
+
+const menuBar = [
+  {
+    label: '文件',
+    submenu: [
+      {
+        label: '选择游戏',
+        accelerator: 'Ctrl+O',
+        click: () => {
+          handlerList.importGame().then(gameName => {
+            // 通知页面更新
+          })
+        }
+      }
+    ]
+  }
+]
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
@@ -95,7 +114,7 @@ const registerShortcut = () => {
       if (!name) {
         return
       }
-      handlerList.createNewSaveFile(name || 'Elden Ring', '')
+      handlerList.createNewSaveFile(name || 'Dark Souls II Scholar of the First Sin', '')
     })
   })
 }
@@ -115,10 +134,7 @@ const checkRunningGame = async () => {
       const lines = stdout.trim().split('\n').slice(1) // 跳过标题行
       for (const line of lines) {
         const columns = line.split(',')
-        const name = columns[0]
-          .replace(/"/g, '')
-          .substring(0, columns.lastIndexOf('.exe'))
-          .toLowerCase() // 去除双引号
+        let name = columns[0].replace(/"/g, '')
         let runingGame = gameList.find((game) => game.name.toLowerCase() === name)
         if (runingGame) {
           resolve(runingGame.id)
