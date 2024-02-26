@@ -1,6 +1,10 @@
 import { app } from 'electron'
 import { v4 as uuidv4 } from 'uuid'
-import { SAVE_FILE_PREFIX, TARGET_SAVE_FOLDER_PREFIX } from '../constants/SettinsConstant'
+import {
+  SAVE_FILE_PREFIX,
+  TARGET_SAVE_FOLDER_PREFIX,
+  RECORDS_PREFIX
+} from '../constants/SettinsConstant'
 import Stores from '../store/index'
 import * as FileUtil from '../util/file'
 
@@ -9,8 +13,6 @@ const FileHandler = {
     const originalFilePath = Stores.settings.get(SAVE_FILE_PREFIX + gameId) || ''
     const targetSaveFolder =
       Stores.settings.get(TARGET_SAVE_FOLDER_PREFIX + gameId) || app.getAppPath()
-    console.log('originalFilePath: ', originalFilePath)
-    console.log('targetSaveFolder: ', targetSaveFolder)
     return new Promise((resolve, reject) => {
       FileUtil.copyFileToFoler(String(originalFilePath), String(targetSaveFolder))
         ?.then((res) => {
@@ -23,7 +25,7 @@ const FileHandler = {
               createdAt: Date.now(),
               comment: comment
             }
-            // TODO
+            Stores.records.set(RECORDS_PREFIX + saveFileRecord.id, saveFileRecord)
             resolve('ok')
           }
         })
@@ -31,6 +33,7 @@ const FileHandler = {
           console.error(err)
           reject('failed')
         })
+      resolve('')
     })
   }
 }

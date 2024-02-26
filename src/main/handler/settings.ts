@@ -3,7 +3,7 @@ import { SAVE_FILE_PREFIX, TARGET_SAVE_FOLDER_PREFIX } from '../constants/Settin
 import Stores from '../store/index'
 
 const SettingsHandler = {
-  getAllSettings: (gameId: string) => {
+  getAllSettings: (event, gameId: string) => {
     return new Promise((resolve) => {
       const originalFilePath = Stores.settings.get(SAVE_FILE_PREFIX + gameId) || ''
       const targetSaveFolder =
@@ -11,7 +11,7 @@ const SettingsHandler = {
       resolve({ originalFilePath, targetSaveFolder })
     })
   },
-  setOrinalFilePath: (gameId: string): Promise<string> => {
+  setOrinalFilePath: (event, gameId: string): Promise<string> => {
     return new Promise((resolve) => {
       dialog
         .showOpenDialog({
@@ -21,7 +21,8 @@ const SettingsHandler = {
         })
         .then((res) => {
           const saveFilePath = res.filePaths[0]
-          Stores.settings.set(SAVE_FILE_PREFIX + gameId, saveFilePath)
+          console.log('保存：', SAVE_FILE_PREFIX + gameId.toString())
+          Stores.settings.set(SAVE_FILE_PREFIX + gameId.toString(), saveFilePath)
           resolve(saveFilePath)
         })
         .catch(() => {
@@ -29,7 +30,7 @@ const SettingsHandler = {
         })
     })
   },
-  setTargetSaveFolder: (gameId: string): Promise<string> => {
+  setTargetSaveFolder: (event, gameId: string): Promise<string> => {
     return new Promise((resolve) => {
       dialog
         .showOpenDialog({

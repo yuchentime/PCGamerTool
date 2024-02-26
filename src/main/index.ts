@@ -1,16 +1,9 @@
-import { electronApp, ipcHelper, is, optimizer } from '@electron-toolkit/utils'
-import { BrowserWindow, app, globalShortcut, ipcMain, ipcRenderer, shell } from 'electron'
+import { electronApp, is, optimizer } from '@electron-toolkit/utils'
+import { BrowserWindow, app, globalShortcut, ipcMain, shell } from 'electron'
 import { join } from 'path'
 import icon from '../../resources/icon.png?asset'
 import FileHandler from './handler/file'
 import SettingsHandler from './handler/settings'
-import * as SettingStore from './store'
-import Store from 'electron-store'
-import {
-  SAVE_FILE_PREFIX,
-  TARGET_SAVE_FOLDER_PREFIX,
-  SAVE_SHORTCURT
-} from './constants/SettinsConstant'
 
 function createWindow(): void {
   // Create the browser window.
@@ -42,6 +35,8 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
+
+  registerShortcut()
 }
 
 // This method will be called when Electron has finished
@@ -59,8 +54,6 @@ app.whenReady().then(() => {
   })
 
   registerHandler()
-
-  registerShortcut()
 
   createWindow()
 
