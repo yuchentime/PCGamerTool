@@ -1,11 +1,13 @@
 import React from 'react'
 
 const Settings = ({ props }) => {
+  const { gameId } = props
+
   const [originalFilePosition, setOriginalFilePosition] = React.useState('')
   const [backupDirectory, setBackupDirectory] = React.useState('')
 
   React.useEffect(() => {
-    window.electron.ipcRenderer.invoke('getAllSettings', 'Elden Ring').then((properties) => {
+    window.electron.ipcRenderer.invoke('getAllSettings', gameId).then((properties) => {
       if (properties) {
         setOriginalFilePosition(properties.originalFilePath)
         setBackupDirectory(properties.targetSaveFolder)
@@ -14,14 +16,11 @@ const Settings = ({ props }) => {
   }, [])
 
   const setOriginalFilePositionFn = async () => {
-    const filePath = await window.electron.ipcRenderer.invoke('setOrinalFilePath', 'Elden Ring')
+    const filePath = await window.electron.ipcRenderer.invoke('setOrinalFilePath', gameId)
     setOriginalFilePosition(filePath)
   }
   const setBackupDirectoryFn = async () => {
-    const backupDirectory = await window.electron.ipcRenderer.invoke(
-      'setTargetSaveFolder',
-      'Elden Ring'
-    )
+    const backupDirectory = await window.electron.ipcRenderer.invoke('setTargetSaveFolder', gameId)
     setBackupDirectory(backupDirectory)
   }
 

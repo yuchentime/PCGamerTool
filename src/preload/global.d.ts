@@ -1,3 +1,5 @@
+import { type } from "os"
+
 // 声明空间的类型
 declare global {
   export type SaveRecord = {
@@ -6,6 +8,12 @@ declare global {
     filePath: string
     createdAt: number
     comment: string
+  }
+
+  export type Game = {
+    id: string
+    name: string
+    thumbnail?: string
   }
 }
 

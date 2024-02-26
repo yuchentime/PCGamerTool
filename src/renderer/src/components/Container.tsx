@@ -13,10 +13,9 @@ const Container = ({ props }) => {
       tabNode = <Settings props={props} />
       break
     default:
-      tabNode = <>错误</>
+      tabNode = <>Error page, please contact the developer.</>
       break
   }
-  console.log('tab type: ', typeof tabNode)
   return <div className="m-2 p-2 text-zinc-600">{tabNode}</div>
 }
 

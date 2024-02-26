@@ -4,6 +4,8 @@ import { join } from 'path'
 import icon from '../../resources/icon.png?asset'
 import FileHandler from './handler/file'
 import SettingsHandler from './handler/settings'
+import { exec } from 'child_process'
+import { stdout } from 'process'
 
 function createWindow(): void {
   // Create the browser window.
@@ -89,6 +91,54 @@ const registerHandler = () => {
 
 const registerShortcut = () => {
   globalShortcut.register('F5', () => {
-    handlerList.createNewSaveFile('Elden Ring', '')
+    checkRunningGame().then((name) => {
+      if (!name) {
+        return
+      }
+      handlerList.createNewSaveFile(name || 'Elden Ring', '')
+    })
   })
+}
+
+const checkRunningGame = async () => {
+  const gameList = getGameList()
+  return new Promise<string>((resolve, reject) => {
+    exec('tasklist /fo csv', (error, stdout) => {
+      if (error) {
+        reject(error)
+        return
+      }
+      if (!gameList || gameList.length === 0) {
+        resolve('')
+        return
+      }
+      const lines = stdout.trim().split('\n').slice(1) // 跳过标题行
+      for (const line of lines) {
+        const columns = line.split(',')
+        const name = columns[0]
+          .replace(/"/g, '')
+          .substring(0, columns.lastIndexOf('.exe'))
+          .toLowerCase() // 去除双引号
+        let runingGame = gameList.find((game) => game.name.toLowerCase() === name)
+        if (runingGame) {
+          resolve(runingGame.id)
+          return
+        }
+      }
+      resolve('')
+    })
+  })
+}
+
+const getGameList = (): Game[] => {
+  return [
+    {
+      id: '1001',
+      name: 'Elden Ring'
+    },
+    {
+      id: '1002',
+      name: 'Nioh 2'
+    }
+  ]
 }

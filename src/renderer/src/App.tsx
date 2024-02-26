@@ -5,18 +5,28 @@ import SideBar from './components/Sidebar'
 function App(): JSX.Element {
   const [tabActive, setTabActive] = React.useState('records')
   const [toast, setToast] = React.useState(false)
-  const gameList = [
-    {
-      id: '1001',
-      name: 'Elden Ring',
-      thumbnail: 'https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg'
-    },
-    {
-      id: '1002',
-      name: 'Nioh 2',
-      thumbnail: 'http://img1.gamersky.com/image2020/04/20200423_syj_380_3/image003.jpg'
+  const [gameList, setGameList] = React.useState<Game[]>([])
+  const [selectedGameId, setSelectedGameId] = React.useState('')
+
+  React.useEffect(() => {
+    const games = [
+      {
+        id: '1001',
+        name: 'Elden Ring',
+        thumbnail: 'https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg'
+      },
+      {
+        id: '1002',
+        name: 'Nioh 2',
+        thumbnail: 'http://img1.gamersky.com/image2020/04/20200423_syj_380_3/image003.jpg'
+      }
+    ]
+    setGameList(games)
+
+    if (games.length > 0) {
+      setSelectedGameId(games[0].id)
     }
-  ]
+  }, [])
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -70,7 +80,7 @@ function App(): JSX.Element {
             </a>
           </div>
         </div>
-        <Container key="container" props={{ tab: tabActive }} />
+        <Container key="container" props={{ tab: tabActive, gameId: selectedGameId }} />
       </div>
     </div>
   )
