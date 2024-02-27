@@ -37,3 +37,18 @@ export const copyFileToFoler = (saveFile: string, newSaveFolder: string, newFile
     })
   })
 }
+
+export const copyFileToFile = (originalFile: string, targetFile: string) => {
+  return new Promise((resolve, reject) => {
+    if (!fs.existsSync(originalFile)) {
+      reject('file is not exists')
+      return
+    }
+    if (!fs.existsSync(targetFile)) {
+      reject('file is not exists')
+      return
+    }
+    fs.copyFileSync(originalFile, targetFile)
+    resolve('ok')
+  })
+}

@@ -13,8 +13,14 @@ declare global {
     comment: string
   }
 
-  export type Game = {
+  type Game = {
     name: string
     thumbnail?: string
+  }
+
+  type Response = {
+    code: number
+    msg: string
+    data?: any
   }
 }

@@ -1,6 +1,6 @@
-import { globalShortcut } from "electron"
-import { checkRunningGame } from "./util/process"
-import GameHandler from "./handler/games"
+import { globalShortcut } from 'electron'
+import RecordsHandler from './handler/records'
+import { checkRunningGame } from './util/process'
 
 export const registerShortcut = () => {
   globalShortcut.register('F5', () => {
@@ -9,7 +9,7 @@ export const registerShortcut = () => {
         console.log('no running game')
         name = 'DarkSoulsII'
       }
-      GameHandler.createNewSaveFile(name, '')
+      RecordsHandler.createNewSaveRecord(name, '')
     })
   })
 }

@@ -15,18 +15,22 @@ function App(): JSX.Element {
     window.api.getGameList().then((games) => {
       if (games && games.length > 0) {
         setGameList(games)
-        setSelectedGame(games[0].id)
+        console.log('init games: ', games[0].name)
+        setSelectedGame(games[0].name)
       }
     })
 
     window.electron.ipcRenderer.on('updateGameList', () => {
-      window.electron.ipcRenderer.invoke('getGameList').then((games) => {
-        setGameList(games)
+      // @ts-ignores
+      window.api.getGameList().then((games) => {
+        if (games && games.length > 0) {
+          setGameList(games)
+          setSelectedGame(games[0].name)
+        }
       })
     })
 
     window.electron.ipcRenderer.on('openSetting', () => {
-      console.log('打开设置页面')
       setOpenGlobalSettings(true)
     })
   }, [])
@@ -51,7 +55,8 @@ function App(): JSX.Element {
         <SideBar
           key="sideBar"
           gameList={gameList}
-          setActivedGameFn={(name) => {
+          selectedGame={selectedGame}
+          setSelectedGameFn={(name) => {
             setSelectedGame(name)
             setOpenGlobalSettings(false)
           }}

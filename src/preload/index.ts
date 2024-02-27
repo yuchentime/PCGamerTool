@@ -8,6 +8,18 @@ const api = {
   },
   getSaveRecords: async (gameId: string) => {
     return await ipcRenderer.invoke('getSaveRecords', gameId)
+  },
+  recoverySaveFile: async (gameId: string, saveRecordId: string) => {
+    return await ipcRenderer.invoke('recoverySaveFile', gameId, saveRecordId)
+  },
+  getAllSettings: async (gameId: string) => {
+    return await ipcRenderer.invoke('getAllSettings', gameId)
+  },
+  setOrinalFilePath: async (gameId: string) => {
+    return await ipcRenderer.invoke('setOrinalFilePath', gameId)
+  },
+  setTargetSaveFolder: async (gameId: string) => {
+    return await ipcRenderer.invoke('setTargetSaveFolder', gameId)
   }
 }
 

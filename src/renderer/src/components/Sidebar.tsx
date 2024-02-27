@@ -2,23 +2,22 @@ import React from 'react'
 
 const SideBar = ({
   gameList,
-  setActivedGameFn
+  selectedGame,
+  setSelectedGameFn
 }: {
   gameList: Game[]
-  setActivedGameFn: (name) => void
+  selectedGame: string
+  setSelectedGameFn: (name) => void
 }) => {
-  const [activedGame, setActivedGame] = React.useState(gameList.length > 0 ? gameList[0].name : '')
-
   return (
     <div>
       <ul className="menu w-72 text-base-content">
         {gameList.map((game) => (
           <li key={game.name}>
             <a
-              className={activedGame === game.name ? 'active' : ''}
+              className={selectedGame === game.name ? 'active' : ''}
               onClick={() => {
-                setActivedGame(game.name)
-                setActivedGameFn(game.name)
+                setSelectedGameFn(game.name)
               }}
             >
               {/* <div className="avatar">

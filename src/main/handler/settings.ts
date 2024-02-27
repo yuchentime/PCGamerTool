@@ -24,7 +24,7 @@ const SettingsHandler = {
         })
         .then((res) => {
           const saveFilePath = res.filePaths[0]
-          console.log('保存：', SAVE_FILE_PREFIX + gameId.toString())
+          console.log('save: ', saveFilePath)
           Stores.settings.set(SAVE_FILE_PREFIX + gameId.toString(), saveFilePath)
           resolve(saveFilePath)
         })
