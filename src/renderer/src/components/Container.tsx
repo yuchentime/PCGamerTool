@@ -1,5 +1,5 @@
+import GameSettings from './GameSettings'
 import Records from './Records'
-import Settings from './Settings'
 
 const Container = ({ props }) => {
   const { tab } = props
@@ -9,8 +9,8 @@ const Container = ({ props }) => {
     case 'records':
       tabNode = <Records props={props} />
       break
-    case 'settings':
-      tabNode = <Settings props={props} />
+    case 'gameSettings':
+      tabNode = <GameSettings props={props} />
       break
     default:
       tabNode = <>Error page, please contact the developer.</>

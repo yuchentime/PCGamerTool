@@ -1,19 +1,21 @@
 import React from 'react'
 import Container from './components/Container'
 import SideBar from './components/Sidebar'
+import GlobalSettings from './components/GlobalSettings'
 
 function App(): JSX.Element {
   const [tabActive, setTabActive] = React.useState('records')
+  const [openGlobalSettings, setOpenGlobalSettings] = React.useState(false)
   const [toast, setToast] = React.useState(false)
   const [gameList, setGameList] = React.useState<Game[]>([])
-  const [selectedGameId, setSelectedGameId] = React.useState('')
+  const [selectedGame, setSelectedGame] = React.useState('')
 
   React.useEffect(() => {
     // @ts-ignores
     window.api.getGameList().then((games) => {
       if (games && games.length > 0) {
         setGameList(games)
-        setSelectedGameId(games[0].id)
+        setSelectedGame(games[0].id)
       }
     })
 
@@ -25,6 +27,7 @@ function App(): JSX.Element {
 
     window.electron.ipcRenderer.on('openSetting', () => {
       console.log('打开设置页面')
+      setOpenGlobalSettings(true)
     })
   }, [])
 
@@ -45,42 +48,51 @@ function App(): JSX.Element {
       )}
 
       <div className="border-r border-gray-200 px-1 pt-10 w-72 flex justify-center item-center">
-        <SideBar key="sideBar" gameList={gameList} />
+        <SideBar
+          key="sideBar"
+          gameList={gameList}
+          setActivedGameFn={(name) => {
+            setSelectedGame(name)
+            setOpenGlobalSettings(false)
+          }}
+        />
       </div>
       <div className="flex-1">
         <div className="p-1">
-          <div role="tablist" className="tabs tabs-lifted">
-            <a
-              role="records"
-              className={`tab ${tabActive === 'records' && 'tab-active'}`}
-              onClick={() => setTabActive('records')}
-            >
-              存档记录
-            </a>
-            <a
-              role="notes"
-              className={`tab ${tabActive === 'notes' && 'tab-active'}`}
-              onClick={() => setTabActive('notes')}
-            >
-              游戏笔记
-            </a>
-            <a
-              role="satistics"
-              className={`tab ${tabActive === 'satistics' && 'tab-active'}`}
-              onClick={() => setTabActive('satistics')}
-            >
-              统计时长
-            </a>
-            <a
-              role="settings"
-              className={`tab ${tabActive === 'settings' && 'tab-active'}`}
-              onClick={() => setTabActive('settings')}
-            >
-              设置
-            </a>
-          </div>
+          {openGlobalSettings ? (
+            <GlobalSettings />
+          ) : (
+            <>
+              <div role="tablist" className="tabs tabs-lifted">
+                <a
+                  className={`tab ${tabActive === 'records' && 'tab-active'}`}
+                  onClick={() => setTabActive('records')}
+                >
+                  存档记录
+                </a>
+                <a
+                  className={`tab ${tabActive === 'notes' && 'tab-active'}`}
+                  onClick={() => setTabActive('notes')}
+                >
+                  游戏笔记
+                </a>
+                <a
+                  className={`tab ${tabActive === 'satistics' && 'tab-active'}`}
+                  onClick={() => setTabActive('satistics')}
+                >
+                  统计时长
+                </a>
+                <a
+                  className={`tab ${tabActive === 'settings' && 'tab-active'}`}
+                  onClick={() => setTabActive('gameSettings')}
+                >
+                  设置
+                </a>
+              </div>
+              <Container key="container" props={{ tab: tabActive, gameId: selectedGame }} />
+            </>
+          )}
         </div>
-        <Container key="container" props={{ tab: tabActive, gameId: selectedGameId }} />
       </div>
     </div>
   )

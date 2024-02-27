@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Settings = ({ props }) => {
+const GameSettings = ({ props }) => {
   const { gameId } = props
 
   const [originalFilePosition, setOriginalFilePosition] = React.useState('')
@@ -44,4 +44,4 @@ const Settings = ({ props }) => {
   )
 }
 
-export default Settings
+export default GameSettings

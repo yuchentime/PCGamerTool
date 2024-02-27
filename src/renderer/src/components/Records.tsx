@@ -6,10 +6,12 @@ const Records = ({ props }) => {
   const [saveRecords, setSaveRecords] = React.useState<SaveRecord[]>([])
 
   React.useEffect(() => {
-    // @ts-ignores
-    window.api.getSaveRecords(gameId).then((records) => {
-      if (records) setSaveRecords(records)
-    })
+    if (gameId) {
+      // @ts-ignores
+      window.api.getSaveRecords(gameId).then((records) => {
+        if (records) setSaveRecords(records)
+      })
+    }
   }, [])
 
   return (
