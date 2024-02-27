@@ -5,7 +5,7 @@ declare global {
     electron: ElectronAPI
     api: unknown
   }
-  export type SaveRecord = {
+  type SaveRecord = {
     id: string
     gameId: string
     filePath: string

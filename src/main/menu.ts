@@ -1,5 +1,5 @@
 import { BrowserWindow, Menu } from 'electron'
-import SettingsHandler from './handler/settings'
+import GameHandler from './handler/games'
 
 export default class MenuBuilder {
   mainWindows: BrowserWindow
@@ -13,7 +13,7 @@ export default class MenuBuilder {
       {
         label: 'Select Game',
         click: () => {
-          SettingsHandler.importGame().then((gameName) => {
+          GameHandler.importGame().then((gameName) => {
             // 通知页面更新
             this.mainWindows.webContents.send('updateGameList', gameName)
           })

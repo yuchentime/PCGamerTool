@@ -15,14 +15,18 @@ const GameHandler = {
     const targetSaveFolder =
       Stores.settings.get(TARGET_SAVE_FOLDER_PREFIX + gameId) || app.getAppPath()
     return new Promise((resolve, reject) => {
-      FileUtil.copyFileToFoler(String(originalFilePath), String(targetSaveFolder))
+      const id = uuidv4().replace('-', '')
+      const targetSaveFolderStr = String(targetSaveFolder)
+      const saveFile = String(originalFilePath)
+      const fileName = saveFile.substring(saveFile.lastIndexOf('\\') + 1) + '_' + id
+      FileUtil.copyFileToFoler(saveFile, targetSaveFolderStr, fileName)
         ?.then((res) => {
           if (res === 'ok') {
             // generate a new save record
             const saveFileRecord = {
-              id: uuidv4(),
+              id: id,
               gameId: gameId,
-              filePath: originalFilePath,
+              filePath: targetSaveFolderStr + '\\' + fileName,
               createdAt: Date.now(),
               comment: comment
             }

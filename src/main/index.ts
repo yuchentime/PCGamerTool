@@ -8,6 +8,8 @@ import SettingsHandler from './handler/settings'
 import MenuBuilder from './menu'
 import RecordsHandler from './handler/records'
 import Store from './store'
+import { checkRunningGame } from './util/process'
+import { registerShortcut } from './shortcut'
 
 function createWindow(): BrowserWindow {
   // Create the browser window.
@@ -84,53 +86,14 @@ app.on('window-all-closed', () => {
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
 
-const handlerList = {
-  ...GameHandler,
-  ...SettingsHandler,
-  ...RecordsHandler
-}
-
 const registerHandler = () => {
+  const handlerList = {
+    ...GameHandler,
+    ...SettingsHandler,
+    ...RecordsHandler
+  }
   Object.entries(handlerList).forEach(([name, handler]) => {
     // @ts-ignore
     ipcMain.handle(name, handler)
-  })
-}
-
-const registerShortcut = () => {
-  globalShortcut.register('F5', () => {
-    checkRunningGame().then((name) => {
-      if (!name) {
-        return
-      }
-      handlerList.createNewSaveFile(name || 'Dark Souls II Scholar of the First Sin', '')
-    })
-  })
-}
-
-const checkRunningGame = async () => {
-  const gameList = GameHandler.getGameList()
-  return new Promise<string>((resolve, reject) => {
-    exec('tasklist /fo csv', (error, stdout) => {
-      if (error) {
-        reject(error)
-        return
-      }
-      if (!gameList || gameList.length === 0) {
-        resolve('')
-        return
-      }
-      const lines = stdout.trim().split('\n').slice(1) // 跳过标题行
-      for (const line of lines) {
-        const columns = line.split(',')
-        let name = columns[0].replace(/"/g, '')
-        let runingGame = gameList.find((game) => game.name.toLowerCase() === name)
-        if (runingGame) {
-          resolve(runingGame.name)
-          return
-        }
-      }
-      resolve('')
-    })
   })
 }

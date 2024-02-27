@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-export const copyFileToFoler = (saveFile: string, newSaveFolder: string) => {
+export const copyFileToFoler = (saveFile: string, newSaveFolder: string, newFileName: string) => {
   return new Promise((resolve, reject) => {
     if (!fs.existsSync(saveFile)) {
       reject('file is not exists')
@@ -11,9 +11,8 @@ export const copyFileToFoler = (saveFile: string, newSaveFolder: string) => {
       return
     }
     const readStream = fs.createReadStream(saveFile)
-    const fileName = saveFile.substring(saveFile.lastIndexOf('\\') + 1)
-    fs.writeFileSync(newSaveFolder + '\\' + fileName, '')
-    const writeStream = fs.createWriteStream(newSaveFolder + '\\' + fileName)
+    fs.writeFileSync(newSaveFolder + '\\' + newFileName, '')
+    const writeStream = fs.createWriteStream(newSaveFolder + '\\' + newFileName)
     readStream.on('data', (chunk) => {
       writeStream.write(chunk)
     })
