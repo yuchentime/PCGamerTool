@@ -9,13 +9,22 @@ function App(): JSX.Element {
   const [selectedGameId, setSelectedGameId] = React.useState('')
 
   React.useEffect(() => {
-    window.electron.ipcRenderer.invoke('getGameList').then((games) => {
-      console.log('games: ', games)
-      setGameList(games)
-
-      if (games.length > 0) {
+    // @ts-ignores
+    window.api.getGameList().then((games) => {
+      if (games && games.length > 0) {
+        setGameList(games)
         setSelectedGameId(games[0].id)
       }
+    })
+
+    window.electron.ipcRenderer.on('updateGameList', () => {
+      window.electron.ipcRenderer.invoke('getGameList').then((games) => {
+        setGameList(games)
+      })
+    })
+
+    window.electron.ipcRenderer.on('openSetting', () => {
+      console.log('打开设置页面')
     })
   }, [])
 

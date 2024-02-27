@@ -1,22 +1,17 @@
+import React from 'react'
 import { RiArrowGoBackFill } from 'react-icons/ri'
 
-
 const Records = ({ props }) => {
-  const { data } = props
-  const recordList = [
-    {
-      id: '1001',
-      filePath: 'D:\\games\\Elden Ring\\rz100212xs.zb',
-      createdAt: new Date().getTime(),
-      comment: 'Hart Hagerty'
-    },
-    {
-      id: '1002',
-      filePath: 'D:\\games\\Elden Ring\\rz100012xs.zb',
-      createdAt: new Date().getTime(),
-      comment: ''
-    }
-  ]
+  const { gameId } = props
+  const [saveRecords, setSaveRecords] = React.useState<SaveRecord[]>([])
+
+  React.useEffect(() => {
+    // @ts-ignores
+    window.api.getSaveRecords(gameId).then((records) => {
+      if (records) setSaveRecords(records)
+    })
+  }, [])
+
   return (
     <div>
       <div className="overflow-x-auto text-black">
@@ -32,7 +27,7 @@ const Records = ({ props }) => {
             </tr>
           </thead>
           <tbody>
-            {recordList.map((record) => {
+            {saveRecords.map((record) => {
               return (
                 <tr key={record.id}>
                   <th>

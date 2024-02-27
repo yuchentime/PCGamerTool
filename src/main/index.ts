@@ -1,18 +1,21 @@
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import { exec } from 'child_process'
-import { BrowserWindow, app, globalShortcut, ipcMain, shell, Menu } from 'electron'
+import { BrowserWindow, app, globalShortcut, ipcMain, shell } from 'electron'
 import { join } from 'path'
 import icon from '../../resources/icon.png?asset'
-import FileHandler from './handler/file'
+import GameHandler from './handler/games'
 import SettingsHandler from './handler/settings'
+import MenuBuilder from './menu'
+import RecordsHandler from './handler/records'
+import Store from './store'
 
-function createWindow(): void {
+function createWindow(): BrowserWindow {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
     show: false,
-    autoHideMenuBar: true,
+    autoHideMenuBar: false,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
@@ -36,8 +39,7 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
-
-  registerShortcut()
+  return mainWindow
 }
 
 // This method will be called when Electron has finished
@@ -56,10 +58,12 @@ app.whenReady().then(() => {
 
   registerHandler()
 
-  createWindow()
+  registerShortcut()
 
-  const menu = Menu.buildFromTemplate(menuBar)
-  Menu.setApplicationMenu(menu)
+  const mainWindow = createWindow()
+
+  const menuBuilder = new MenuBuilder(mainWindow)
+  menuBuilder.buildMenu()
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
@@ -68,26 +72,10 @@ app.whenReady().then(() => {
   })
 })
 
-const menuBar = [
-  {
-    label: '文件',
-    submenu: [
-      {
-        label: '选择游戏',
-        accelerator: 'Ctrl+O',
-        click: () => {
-          handlerList.importGame().then(gameName => {
-            // 通知页面更新
-          })
-        }
-      }
-    ]
-  }
-]
-
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
+app.on('will-quit', () => globalShortcut.unregisterAll())
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
@@ -97,8 +85,9 @@ app.on('window-all-closed', () => {
 // code. You can also put them in separate files and require them here.
 
 const handlerList = {
-  ...FileHandler,
-  ...SettingsHandler
+  ...GameHandler,
+  ...SettingsHandler,
+  ...RecordsHandler
 }
 
 const registerHandler = () => {
@@ -120,7 +109,7 @@ const registerShortcut = () => {
 }
 
 const checkRunningGame = async () => {
-  const gameList = getGameList()
+  const gameList = GameHandler.getGameList()
   return new Promise<string>((resolve, reject) => {
     exec('tasklist /fo csv', (error, stdout) => {
       if (error) {
@@ -137,24 +126,11 @@ const checkRunningGame = async () => {
         let name = columns[0].replace(/"/g, '')
         let runingGame = gameList.find((game) => game.name.toLowerCase() === name)
         if (runingGame) {
-          resolve(runingGame.id)
+          resolve(runingGame.name)
           return
         }
       }
       resolve('')
     })
   })
-}
-
-const getGameList = (): Game[] => {
-  return [
-    {
-      id: '1001',
-      name: 'Elden Ring'
-    },
-    {
-      id: '1002',
-      name: 'Nioh 2'
-    }
-  ]
 }
