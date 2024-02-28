@@ -22,7 +22,6 @@ function App(): JSX.Element {
 
     window.electron.ipcRenderer.on("notification", (_, title) => {
       new window.Notification(String(title), { body: "" })
-      updateGameList()
     })
   }, [])
 
