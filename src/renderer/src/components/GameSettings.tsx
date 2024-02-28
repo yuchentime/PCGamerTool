@@ -14,7 +14,7 @@ const GameSettings = ({ props }) => {
         setBackupDirectory(properties.targetSaveFolder)
       }
     })
-  }, [])
+  }, [gameId])
 
   const setOriginalFilePositionFn = async () => {
     // @ts-ignores

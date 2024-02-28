@@ -60,9 +60,9 @@ app.whenReady().then(() => {
 
   registerHandler()
 
-  registerShortcut()
-
   const mainWindow = createWindow()
+
+  registerShortcut(mainWindow)
 
   const menuBuilder = new MenuBuilder(mainWindow)
   menuBuilder.buildMenu()

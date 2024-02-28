@@ -16,7 +16,7 @@ const Records = ({ props }) => {
         }
       })
     }
-  }, [])
+  }, [gameId])
 
   React.useEffect(() => {
     if (alert) {
