@@ -1,10 +1,11 @@
-import React from 'react'
-import { RiArrowGoBackFill } from 'react-icons/ri'
-import { FaFolderOpen } from 'react-icons/fa'
+import React from "react"
+import { RiArrowGoBackFill } from "react-icons/ri"
+import { FaFolderOpen } from "react-icons/fa"
+import Alert from "./Alert"
 const Records = ({ props }) => {
   const { gameId } = props
   const [saveRecords, setSaveRecords] = React.useState([])
-  const [toast, setToast] = React.useState(false)
+  const [alert, setAlert] = React.useState(null)
 
   React.useEffect(() => {
     if (gameId) {
@@ -17,28 +18,29 @@ const Records = ({ props }) => {
     }
   }, [])
 
+  React.useEffect(() => {
+    if (alert) {
+      setTimeout(() => {
+        setAlert(null)
+      }, 1500)
+    }
+  }, [alert])
+
   const recoverySaveFile = (saveRecordsId: string) => {
     // @ts-ignores
     window.api.recoverySaveFile(gameId, saveRecordsId).then((res) => {
       if (res && res.code === 0) {
-        setToast(true)
+        setAlert({ msg: res.msg, alertType: "alert-success" })
       } else {
-        setToast(false)
+        setAlert({ msg: res.msg, alertType: "alert-error" })
       }
     })
   }
 
   return (
     <div>
-      {toast && (
-        <div className="toast toast-top toast-center top-24 z-10">
-          <div className="alert alert-info">
-            <span>操作成功！</span>
-          </div>
-        </div>
-      )}
-
       <div className="overflow-x-auto text-black">
+        {alert && <Alert props={alert} />}
         <table className="table">
           {/* head */}
           <thead>
