@@ -1,11 +1,11 @@
 import React from "react"
-import { RiArrowGoBackFill } from "react-icons/ri"
 import { FaFolderOpen } from "react-icons/fa"
+import { RiArrowGoBackFill } from "react-icons/ri"
 import Alert from "./Alert"
 const Records = ({ props }) => {
   const { gameId } = props
-  const [saveRecords, setSaveRecords] = React.useState([])
-  const [alert, setAlert] = React.useState(null)
+  const [saveRecords, setSaveRecords] = React.useState<SaveRecord[]>([])
+  const [alert, setAlert] = React.useState<Alert | null>(null)
 
   React.useEffect(() => {
     if (gameId) {

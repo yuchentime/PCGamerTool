@@ -18,9 +18,10 @@ declare global {
     thumbnail?: string
   }
 
-  type Response = {
-    code: number
+  type Alert = {
     msg: string
-    data?: any
+    alertType: string
   }
 }
+
+export {}
