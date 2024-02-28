@@ -1,12 +1,8 @@
-import { app, dialog } from 'electron'
+import { dialog } from 'electron'
 import {
-  SAVE_FILE_PREFIX,
-  TARGET_SAVE_FOLDER_PREFIX,
   GAMES_PREFIX
 } from '../constants/SettinsConstant'
 import Stores from '../store/index'
-import * as FileUtil from '../util/file'
-import fs from 'fs'
 
 const GameHandler = {
   importGame: () => {
@@ -40,38 +36,6 @@ const GameHandler = {
   getGameList: () => {
     // @ts-ignore
     return Stores.games.get(GAMES_PREFIX) || []
-  },
-  recoverySaveFile: (event, gameId: string, saveRecordId: string) => {
-    return new Promise((resolve, reject) => {
-      const originalFilePath = Stores.settings.has(SAVE_FILE_PREFIX + gameId)
-        ? String(Stores.settings.get(SAVE_FILE_PREFIX + gameId))
-        : ''
-      if (!originalFilePath) {
-        reject({
-          code: -1,
-          msg: 'no save file'
-        })
-        return
-      }
-      const targetSaveFolder = Stores.settings.has(TARGET_SAVE_FOLDER_PREFIX + gameId)
-        ? String(Stores.settings.get(TARGET_SAVE_FOLDER_PREFIX + gameId))
-        : app.getAppPath()
-
-      const originalFileName = originalFilePath.substring(originalFilePath.lastIndexOf('\\') + 1)
-      const saveRecordFilePath = targetSaveFolder + '\\' + originalFileName + '_' + saveRecordId
-      if (!fs.existsSync(saveRecordFilePath)) {
-        reject({
-          code: -1,
-          msg: 'no the save record'
-        })
-        return
-      }
-      FileUtil.copyFileToFile(saveRecordFilePath, originalFilePath)
-      resolve({
-        code: 0,
-        msg: 'ok'
-      })
-    })
   }
 }
 

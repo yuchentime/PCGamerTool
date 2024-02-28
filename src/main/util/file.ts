@@ -2,14 +2,6 @@ import fs from 'fs'
 
 export const copyFileToFoler = (saveFile: string, newSaveFolder: string, newFileName: string) => {
   return new Promise((resolve, reject) => {
-    if (!fs.existsSync(saveFile)) {
-      reject('file is not exists')
-      return
-    }
-    if (!fs.existsSync(newSaveFolder)) {
-      reject('folder is not exists')
-      return
-    }
     const readStream = fs.createReadStream(saveFile)
     fs.writeFileSync(newSaveFolder + '\\' + newFileName, '')
     const writeStream = fs.createWriteStream(newSaveFolder + '\\' + newFileName)

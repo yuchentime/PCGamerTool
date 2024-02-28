@@ -8,9 +8,10 @@ import Stores from '../store/index'
 const SettingsHandler = {
   getAllSettings: (event, gameId: string) => {
     return new Promise((resolve) => {
-      const originalFilePath = Stores.settings.get(SAVE_FILE_PREFIX + gameId) || ''
-      const targetSaveFolder =
-        Stores.settings.get(TARGET_SAVE_FOLDER_PREFIX + gameId) || app.getAppPath()
+    const originalFilePath = String(Stores.settings.get(SAVE_FILE_PREFIX + gameId) || '')
+    const targetSaveFolder = String(
+      Stores.settings.get(TARGET_SAVE_FOLDER_PREFIX + gameId) || app.getAppPath()
+    )
       resolve({ originalFilePath, targetSaveFolder })
     })
   },

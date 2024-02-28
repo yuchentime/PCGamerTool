@@ -1,5 +1,5 @@
 import { globalShortcut } from 'electron'
-import RecordsHandler from './handler/records'
+import * as RecordsHandler from './handler/records'
 import { checkRunningGame } from './util/process'
 
 export const registerShortcut = () => {
@@ -9,7 +9,7 @@ export const registerShortcut = () => {
         console.log('no running game')
         name = 'DarkSoulsII'
       }
-      RecordsHandler.createNewSaveRecord(name, '')
+      RecordsHandler.createNewSaveRecord(name)
     })
   })
 }

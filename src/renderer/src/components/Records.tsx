@@ -1,6 +1,6 @@
 import React from 'react'
 import { RiArrowGoBackFill } from 'react-icons/ri'
-
+import { FaFolderOpen } from 'react-icons/fa'
 const Records = ({ props }) => {
   const { gameId } = props
   const [saveRecords, setSaveRecords] = React.useState([])
@@ -23,6 +23,7 @@ const Records = ({ props }) => {
       if (res && res.code === 0) {
         setToast(true)
       } else {
+        setToast(false)
       }
     })
   }
@@ -65,13 +66,18 @@ const Records = ({ props }) => {
                   </td>
                   <td>{record.createdAt}</td>
                   <td>{record.comment}</td>
-                  <th>
-                    <div className="tooltip text-10" data-tip="还原存档点">
+                  <th className="flex">
+                    <div className="tooltip text-10 " data-tip="还原存档点">
                       <button
                         className="btn btn-ghost btn-xs"
                         onClick={() => recoverySaveFile(record.id)}
                       >
                         <RiArrowGoBackFill />
+                      </button>
+                    </div>
+                    <div className="tooltip text-10 " data-tip="打开备份目录">
+                      <button className="btn btn-ghost btn-xs">
+                        <FaFolderOpen />
                       </button>
                     </div>
                   </th>
