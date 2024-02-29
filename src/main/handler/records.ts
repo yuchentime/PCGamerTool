@@ -7,7 +7,6 @@ import * as FileUtil from '../util/file'
 
 const RecordsHandler = {
   getSaveRecords: (event, gameId: string) => {
-    console.log('querey by gameId: ', gameId)
     if (Stores.records.get(gameId)) {
       // @ts-ignores
       const saveRecordList: SaveRecord[] = Stores.records.get(gameId)

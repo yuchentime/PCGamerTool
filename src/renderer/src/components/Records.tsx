@@ -8,6 +8,7 @@ const Records = ({ props }) => {
   const [alert, setAlert] = React.useState<Alert | null>(null)
 
   React.useEffect(() => {
+    console.log("query records by: ", gameId)
     if (gameId) {
       // @ts-ignores
       window.api.getSaveRecords(gameId).then((records) => {
