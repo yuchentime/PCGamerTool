@@ -1,9 +1,9 @@
-import { app } from 'electron'
-import fs from 'fs'
-import { v4 as uuidv4 } from 'uuid'
-import { SAVE_FILE_PREFIX, TARGET_SAVE_FOLDER_PREFIX } from '../constants/SettinsConstant'
-import Stores from '../store/index'
-import * as FileUtil from '../util/file'
+import { app } from "electron"
+import fs from "fs"
+import { v4 as uuidv4 } from "uuid"
+import { SAVE_FILE_PREFIX, TARGET_SAVE_FOLDER_PREFIX } from "../constants/SettinsConstant"
+import Stores from "../store/index"
+import * as FileUtil from "../util/file"
 
 const RecordsHandler = {
   getSaveRecords: (event, gameId: string) => {
@@ -18,68 +18,67 @@ const RecordsHandler = {
     return new Promise((resolve, reject) => {
       const originalFilePath = Stores.settings.has(SAVE_FILE_PREFIX + gameId)
         ? String(Stores.settings.get(SAVE_FILE_PREFIX + gameId))
-        : ''
+        : ""
       if (!originalFilePath) {
         reject({
           code: -1,
-          msg: 'no save file'
+          msg: "no save file"
         })
         return
       }
-      const targetSaveFolder = Stores.settings.has(TARGET_SAVE_FOLDER_PREFIX + gameId)
-        ? String(Stores.settings.get(TARGET_SAVE_FOLDER_PREFIX + gameId))
+      const targetSaveFolder = Stores.settings.has(TARGET_SAVE_FOLDER_PREFIX)
+        ? String(Stores.settings.get(TARGET_SAVE_FOLDER_PREFIX))
         : app.getAppPath()
+      const gameBackupSaveFolder = targetSaveFolder + "\\" + gameId
 
-      const originalFileName = originalFilePath.substring(originalFilePath.lastIndexOf('\\') + 1)
-      const saveRecordFilePath = targetSaveFolder + '\\' + saveRecordId + '\\' + originalFileName
+      const originalFileName = originalFilePath.substring(originalFilePath.lastIndexOf("\\") + 1)
+      const saveRecordFilePath =
+        gameBackupSaveFolder + "\\" + saveRecordId + "\\" + originalFileName
       if (!fs.existsSync(saveRecordFilePath)) {
         reject({
           code: -1,
-          msg: 'no the save record'
+          msg: "no the save record"
         })
         return
       }
       FileUtil.copyFileToFile(saveRecordFilePath, originalFilePath)
       resolve({
         code: 0,
-        msg: 'ok'
+        msg: "ok"
       })
     })
   }
 }
 
 export const createNewSaveRecord = (gameId: string): Promise<string> => {
-  const originalFile = String(Stores.settings.get(SAVE_FILE_PREFIX + gameId) || '')
-  const targetSaveFolder = String(
-    Stores.settings.get(TARGET_SAVE_FOLDER_PREFIX + gameId) || app.getAppPath()
-  )
-  console.log('originalFile: ', originalFile)
-  console.log('targetSaveFolder: ', targetSaveFolder)
+  const originalFile = String(Stores.settings.get(SAVE_FILE_PREFIX + gameId) || "")
+  const targetSaveFolder =
+    String(Stores.settings.get(TARGET_SAVE_FOLDER_PREFIX) || app.getAppPath()) + "\\" + gameId
+  if (!fs.existsSync(targetSaveFolder)) {
+    fs.mkdirSync(targetSaveFolder)
+  }
+
   return new Promise((resolve, reject) => {
     if (!fs.existsSync(originalFile)) {
-      reject('file is not exists')
+      reject("file is not exists")
       return
     }
-    if (!fs.existsSync(targetSaveFolder)) {
-      reject('folder is not exists')
-      return
-    }
-    const id = uuidv4().toLowerCase().replace('-', '')
-    const targetSaveFolderStr = String(targetSaveFolder) + '\\' + id
+    const id = uuidv4().toLowerCase().replace("-", "")
+    const targetSaveFolderStr = String(targetSaveFolder) + "\\" + id
     if (!fs.existsSync(targetSaveFolderStr)) {
       fs.mkdirSync(targetSaveFolderStr)
     }
-    const fileName = originalFile.substring(originalFile.lastIndexOf('\\') + 1)
+    const fileName = originalFile.substring(originalFile.lastIndexOf("\\") + 1)
     FileUtil.copyFileToFoler(originalFile, targetSaveFolderStr, fileName)
       ?.then((res) => {
-        if (res === 'ok') {
+        if (res === "ok") {
           // generate a new save record
           const saveFileRecord = {
             id: id,
             gameId: gameId,
-            filePath: targetSaveFolderStr + '\\' + fileName,
+            filePath: targetSaveFolderStr + "\\" + fileName,
             createdAt: Date.now(),
-            comment: ''
+            comment: ""
           }
           if (Stores.records.get(gameId)) {
             // @ts-ignores
@@ -88,14 +87,14 @@ export const createNewSaveRecord = (gameId: string): Promise<string> => {
           } else {
             Stores.records.set(gameId, [saveFileRecord])
           }
-          resolve('ok')
+          resolve("ok")
         }
       })
       .catch((err) => {
         console.error(err)
-        reject('failed')
+        reject("failed")
       })
-    resolve('')
+    resolve("")
   })
 }
 

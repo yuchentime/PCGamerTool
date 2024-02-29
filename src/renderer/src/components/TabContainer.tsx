@@ -27,7 +27,7 @@ const Dashboard = () => {
           统计时长
         </a>
         <a
-          className={`tab ${tabActive === "settings" && "tab-active"}`}
+          className={`tab ${tabActive === "gameSettings" && "tab-active"}`}
           onClick={() => setTabActive("gameSettings")}
         >
           设置

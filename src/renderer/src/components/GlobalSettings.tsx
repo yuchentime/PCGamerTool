@@ -4,6 +4,23 @@ import { useNavigate } from "react-router"
 const GlobalSettings = ({}) => {
   const navigate = useNavigate()
   const [autoStatistics, setAutoStatistics] = React.useState(false)
+  const [backupDirectory, setBackupDirectory] = React.useState("")
+
+  React.useEffect(() => {
+    // @ts-ignores
+    window.api.getGlobalSettings().then((properties) => {
+      if (properties) {
+        setBackupDirectory(properties.targetSaveFolder)
+      }
+    })
+  }, [])
+
+  const setBackupDirectoryFn = async () => {
+    // @ts-ignores
+    window.api.setTargetSaveFolder().then((backupDirectory) => {
+      setBackupDirectory(backupDirectory)
+    })
+  }
 
   const toBack = () => {
     // 如果是-1，则需要点击两次
@@ -31,6 +48,13 @@ const GlobalSettings = ({}) => {
           <div className="mr-5">
             <input type="input" />
           </div>
+        </div>
+        <div className="flex items-center mt-10">
+          <h4 className="mr-10 font-bold">备份目录</h4>
+          <div className="mr-5">{backupDirectory}</div>
+          <button className="btn btn-sm" onClick={setBackupDirectoryFn}>
+            更改目录
+          </button>
         </div>
       </div>
     </div>
