@@ -1,6 +1,5 @@
-import path from "path"
-import { NavLink } from "react-router-dom"
 import React from "react"
+import { NavLink } from "react-router-dom"
 
 const SideBar = () => {
   const [gameList, setGameList] = React.useState<Game[]>([])

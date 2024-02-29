@@ -5,10 +5,6 @@ import { useParams } from "react-router-dom"
 const Dashboard = () => {
   const { gameId } = useParams()
   const [tabActive, setTabActive] = React.useState("records")
-  React.useEffect(() => {
-    console.log("gameId: ", gameId)
-  }, [])
-
   return (
     <div>
       <div role="tablist" className="tabs tabs-lifted">

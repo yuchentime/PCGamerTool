@@ -1,11 +1,19 @@
 import React from "react"
-
+import { IoArrowBack } from "react-icons/io5"
+import { useNavigate } from "react-router"
 const GlobalSettings = ({}) => {
+  const navigate = useNavigate()
   const [autoStatistics, setAutoStatistics] = React.useState(false)
 
+  const toBack = () => {
+    // 如果是-1，则需要点击两次
+    navigate(-2)
+  }
+
   return (
-    <>
+    <div className="flex">
       <div className="items-center text-zinc-600 m-2 p-2">
+        <IoArrowBack className="cursor-pointer" onClick={toBack} />
         {/* 每60s查询后台进程 */}
         <div className="flex ">
           <h4 className="mr-10 font-bold">自动统计游戏时长</h4>
@@ -21,13 +29,11 @@ const GlobalSettings = ({}) => {
         <div className="flex ">
           <h4 className="mr-10 font-bold">每日游戏时长上限提醒</h4>
           <div className="mr-5">
-            <input
-              type="input"
-            />
+            <input type="input" />
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
