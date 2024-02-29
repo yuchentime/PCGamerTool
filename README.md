@@ -1,2 +1,2 @@
 ## Teach stack
-Electron + React + daisyui + tailwindcs
+Electron + React + daisyui + tailwindcss
