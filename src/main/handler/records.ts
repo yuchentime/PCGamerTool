@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid"
 import { SAVE_FILE_PREFIX, TARGET_SAVE_FOLDER_PREFIX } from "../constants/SettinsConstant"
 import Stores from "../store/index"
 import * as FileUtil from "../util/file"
+import { generateRecordId } from "../util/date"
 
 const RecordsHandler = {
   getSaveRecords: (event, gameId: string) => {
@@ -63,7 +64,7 @@ export const createNewSaveRecord = (gameId: string): Promise<string> => {
       reject("file is not exists")
       return
     }
-    const id = uuidv4().toLowerCase().replace("-", "")
+    const id = generateRecordId()
     const targetSaveFolderStr = String(targetSaveFolder) + "\\" + id
     if (!fs.existsSync(targetSaveFolderStr)) {
       fs.mkdirSync(targetSaveFolderStr)
