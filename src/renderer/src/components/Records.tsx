@@ -1,8 +1,8 @@
+import { formateDate } from "@renderer/util/date"
 import React from "react"
 import { FaFolderOpen } from "react-icons/fa"
 import { RiArrowGoBackFill } from "react-icons/ri"
 import Alert from "./Alert"
-import { formateDate } from "@renderer/util/date"
 
 const Records = ({ props }) => {
   const { gameId } = props
@@ -35,6 +35,18 @@ const Records = ({ props }) => {
           })
         )
       } else {
+        setAlert({
+          msg: response.msg,
+          alertType: "alert-warning"
+        })
+      }
+    })
+  }
+
+  const openSaveFileFolder = (saveRecordId: string) => {
+    // @ts-ignores
+    window.api.openSaveFileFolder(gameId, saveRecordId).then((response) => {
+      if (!response || response.code !== 0) {
         setAlert({
           msg: response.msg,
           alertType: "alert-warning"
@@ -137,7 +149,7 @@ const Records = ({ props }) => {
                       </button>
                     </div>
                     <div className="tooltip text-10 " data-tip="打开备份目录">
-                      <button className="btn btn-ghost btn-xs">
+                      <button className="btn btn-ghost btn-xs" onClick={() => openSaveFileFolder(record.id)}>
                         <FaFolderOpen />
                       </button>
                     </div>

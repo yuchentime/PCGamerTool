@@ -1,4 +1,4 @@
-import { app } from "electron"
+import { app, shell } from "electron"
 import fs from "fs"
 import { SAVE_FILE_PREFIX, TARGET_SAVE_FOLDER_PREFIX } from "../constants/SettinsConstant"
 import Stores from "../store/index"
@@ -42,7 +42,7 @@ const RecordsHandler = {
         ? String(Stores.settings.get(SAVE_FILE_PREFIX + gameId))
         : ""
       if (!originalFilePath) {
-        reject({
+        resolve({
           code: -1,
           msg: "no save file"
         })
@@ -57,7 +57,7 @@ const RecordsHandler = {
       const saveRecordFilePath =
         gameBackupSaveFolder + "\\" + saveRecordId + "\\" + originalFileName
       if (!fs.existsSync(saveRecordFilePath)) {
-        reject({
+        resolve({
           code: -1,
           msg: "no the save record"
         })
@@ -68,6 +68,33 @@ const RecordsHandler = {
         code: 0,
         msg: "ok"
       })
+    })
+  },
+  openSaveFileFolder: (event, gameId: string, saveSaveRecordId: string): Promise<any> => {
+    return new Promise((resolve, reject) => {
+      try {
+        const targetSaveFolder = Stores.settings.has(TARGET_SAVE_FOLDER_PREFIX)
+          ? String(Stores.settings.get(TARGET_SAVE_FOLDER_PREFIX))
+          : app.getAppPath()
+        const gameBackupSaveFolder = targetSaveFolder + "\\" + gameId + "\\" + saveSaveRecordId
+        if (fs.existsSync(gameBackupSaveFolder)) {
+          shell.openPath(gameBackupSaveFolder)
+          resolve({
+            code: 0,
+            msg: "ok"
+          })
+        } else {
+          resolve({
+            code: -1,
+            msg: "no the save record"
+          })
+        }
+      } catch (error) {
+        resolve({
+          code: -1,
+          msg: error
+        })
+      }
     })
   }
 }

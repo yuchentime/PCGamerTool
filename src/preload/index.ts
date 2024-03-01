@@ -29,6 +29,9 @@ const api = {
   },
   saveComment: async (gameId: string, saveRecordId: string, comment: string) => {
     return await ipcRenderer.invoke('saveComment', gameId, saveRecordId, comment)
+  },
+  openSaveFileFolder: async (gameId: string, saveSaveRecordId: string) => {
+    return await ipcRenderer.invoke('openSaveFileFolder', gameId, saveSaveRecordId)
   }
 }
 
