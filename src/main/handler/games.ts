@@ -22,9 +22,9 @@ const GameHandler = {
           // @ts-ignore
           const gameList: Game[] = Stores.games.get(GAMES_PREFIX)
           if (gameList && !gameList.find((item) => item.name === gameName)) {
-            Stores.games.set(GAMES_PREFIX, [...gameList, { name: gameName }])
+            Stores.games.set(GAMES_PREFIX, [...gameList, { name: gameName, lanunchPath: gameLanunchPath }])
           } else {
-            Stores.games.set(GAMES_PREFIX, [{ name: gameName }])
+            Stores.games.set(GAMES_PREFIX, [{ name: gameName, lanunchPath: gameLanunchPath }])
           }
           resolve(gameName)
         })
@@ -36,7 +36,7 @@ const GameHandler = {
   getGameList: () => {
     // @ts-ignore
     return Stores.games.get(GAMES_PREFIX) || []
-  }
+  },
 }
 
 export default GameHandler

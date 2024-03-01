@@ -1,10 +1,9 @@
 import { app } from "electron"
 import fs from "fs"
-import { v4 as uuidv4 } from "uuid"
 import { SAVE_FILE_PREFIX, TARGET_SAVE_FOLDER_PREFIX } from "../constants/SettinsConstant"
 import Stores from "../store/index"
-import * as FileUtil from "../util/file"
 import { generateRecordId } from "../util/date"
+import * as FileUtil from "../util/file"
 
 const RecordsHandler = {
   getSaveRecords: (event, gameId: string) => {
@@ -14,6 +13,28 @@ const RecordsHandler = {
       return saveRecordList
     }
     return []
+  },
+  saveComment: (event, gameId: string, saveRecordId: string, comment: string): Promise<any> => {
+    return new Promise((resolve, reject) => {
+      try {
+        // @ts-ignores
+        const saveRecordList: SaveRecord[] = Stores.records.get(gameId)
+        const saveRecord = saveRecordList.find((record) => record.id === saveRecordId)
+        if (saveRecord) {
+          saveRecord.comment = comment
+        }
+        Stores.records.set(gameId, saveRecordList)
+        resolve({
+          code: 0,
+          msg: "success"
+        })
+      } catch (error) {
+        reject({
+          code: -1,
+          msg: error
+        })
+      }
+    })
   },
   recoverySaveFile: (event, gameId: string, saveRecordId: string) => {
     return new Promise((resolve, reject) => {
@@ -77,7 +98,6 @@ export const createNewSaveRecord = (gameId: string): Promise<string> => {
           const saveFileRecord = {
             id: id,
             gameId: gameId,
-            filePath: targetSaveFolderStr + "\\" + fileName,
             createdAt: Date.now(),
             comment: ""
           }

@@ -21,6 +21,11 @@ const GameSettings = ({ props }) => {
     })
   }
 
+  const startGame = () => {
+    // @ts-ignores
+    window.api.startGame(gameId)
+  }
+
   return (
     <>
       <div className="flex items-center">
@@ -30,6 +35,9 @@ const GameSettings = ({ props }) => {
           更改地址
         </button>
       </div>
+      <button className="btn btn-sm" onClick={startGame}>
+          打开游戏
+        </button>
     </>
   )
 }

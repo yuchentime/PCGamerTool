@@ -5,8 +5,8 @@ import ReactDOM from "react-dom/client"
 import { RouterProvider } from "react-router"
 import { createBrowserRouter } from "react-router-dom"
 import App from "./App"
-import Dashboard from "./components/TabContainer"
-import GlobalSettings from "./components/GlobalSettings"
+import TabContainer from "./pages/TabContainer"
+import GlobalSettings from "./pages/GlobalSettings"
 
 const router = createBrowserRouter([
   {
@@ -15,7 +15,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: ":gameId",
-        element: <Dashboard />
+        element: <TabContainer />
       },
       {
         path: "/settings",

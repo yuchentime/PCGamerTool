@@ -1,4 +1,5 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
+import { type } from 'os'
 
 declare global {
   interface Window {
@@ -8,7 +9,6 @@ declare global {
   type SaveRecord = {
     id: string
     gameId: string
-    filePath: string
     createdAt: number
     comment: string
   }
@@ -21,6 +21,11 @@ declare global {
   type Alert = {
     msg: string
     alertType: string
+  }
+
+  type ElectronResponse = {
+    code: number
+    msg: string
   }
 }
 

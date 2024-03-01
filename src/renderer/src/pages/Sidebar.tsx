@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom"
 const SideBar = () => {
   const [gameList, setGameList] = React.useState<Game[]>([])
   const [selectedGame, setSelectedGame] = React.useState("")
+  const [localImg, setLocalImg] = React.useState("")
 
   React.useEffect(() => {
     updateGameList()
@@ -30,14 +31,14 @@ const SideBar = () => {
           <NavLink to={`/${game.name}`}>
             <li key={game.name} onClick={() => setSelectedGame(game.name)}>
               <a className={selectedGame === game.name ? "active" : ""}>
-                <div className="avatar">
+                {/* <div className="avatar">
                   <div className="w-8 rounded">
                     <img
-                      src={"file://icon.png"}
+                      src={localImg}
                       alt={game.name}
                     />
                   </div>
-                </div>
+                </div> */}
                 {game.name}
               </a>
             </li>

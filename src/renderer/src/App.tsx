@@ -1,7 +1,7 @@
 import React from "react"
 import { Outlet, useNavigate } from "react-router"
-import SideBar from "./components/Sidebar"
-import { useSlicenceHook } from "./hooks/useSlicenceHook"
+import SideBar from "./pages/Sidebar"
+import useSlicenceHook from "./hooks/useSlicenceHook"
 
 function App(): JSX.Element {
   const navigate = useNavigate()

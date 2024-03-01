@@ -1,8 +1,8 @@
 import React from "react"
-import Container from "./Container"
+import TabDispatcher from "../components/TabDispatcher"
 import { useParams } from "react-router-dom"
 
-const Dashboard = () => {
+const TabContainer = () => {
   const { gameId } = useParams()
   const [tabActive, setTabActive] = React.useState("records")
   return (
@@ -33,9 +33,9 @@ const Dashboard = () => {
           设置
         </a>
       </div>
-      <Container key="container" props={{ tab: tabActive, gameId: gameId }} />
+      <TabDispatcher key="container" props={{ tab: tabActive, gameId: gameId }} />
     </div>
   )
 }
 
-export default Dashboard
+export default TabContainer

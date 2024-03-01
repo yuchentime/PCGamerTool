@@ -1,7 +1,7 @@
 import GameSettings from './GameSettings'
 import Records from './Records'
 
-const Container = ({ props }) => {
+const TabDispatcher = ({ props }) => {
   const { tab } = props
   console.log('tab: ', tab)
   let tabNode: React.ReactElement
@@ -13,10 +13,10 @@ const Container = ({ props }) => {
       tabNode = <GameSettings props={props} />
       break
     default:
-      tabNode = <>Error page, please contact the developer.</>
+      tabNode = <>Not supported by now.</>
       break
   }
   return <div className="m-2 p-2 text-zinc-600">{tabNode}</div>
 }
 
-export default Container
+export default TabDispatcher

@@ -23,6 +23,12 @@ const api = {
   },
   getGlobalSettings: async () => {
     return await ipcRenderer.invoke('getGlobalSettings')
+  },
+  startGame: async (gameId: string) => {
+    return await ipcRenderer.invoke('startGame', gameId)
+  },
+  saveComment: async (gameId: string, saveRecordId: string, comment: string) => {
+    return await ipcRenderer.invoke('saveComment', gameId, saveRecordId, comment)
   }
 }
 

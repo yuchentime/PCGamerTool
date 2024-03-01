@@ -1,12 +1,9 @@
 import { electronApp, is, optimizer } from "@electron-toolkit/utils"
 import {
   BrowserWindow,
-  ProtocolRequest,
   app,
   globalShortcut,
   ipcMain,
-  nativeImage,
-  protocol,
   shell
 } from "electron"
 import { join } from "path"
@@ -50,16 +47,10 @@ function createWindow(): BrowserWindow {
   return mainWindow
 }
 
-protocol.registerSchemesAsPrivileged([{ scheme: "file", privileges: { bypassCSP: true } }])
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-  protocol.registerFileProtocol("file", (request, callback) => {
-    const pathname = request.url.replace("file://", "")
-    console.log("pathname: ", pathname)
-    callback(pathname)
-  })
 
   // Set app user model id for windows
   electronApp.setAppUserModelId("com.electron")
@@ -108,15 +99,4 @@ const registerHandler = () => {
     // @ts-ignore
     ipcMain.handle(name, handler)
   })
-
-  ipcMain.handle("getPic", () => {
-    const image = nativeImage.createFromPath(
-      "C://Users//Administrator//AppData//Roaming//steam-source-manager//eldenring.jpg"
-    )
-    console.log(image)
-    return image
-  })
-}
-function GetSomeFilePath(url: string) {
-  throw new Error("Function not implemented.")
 }
