@@ -7,6 +7,7 @@ import {
   TARGET_SAVE_FOLDER_PREFIX
 } from "../constants/SettinsConstant"
 import Stores from "../store/index"
+import {exec} from 'child_process'
 
 const SettingsHandler = {
   getGameSettings: (_, gameId: string) => {
@@ -81,19 +82,21 @@ const SettingsHandler = {
   }
 }
 
-const transferBackupFolder = (source: string, destination: string): Promise<boolean> => {
+const transferBackupFolder = (sourceFolder: string, destinationFolder: string): Promise<boolean> => {
   return new Promise((resolve) => {
-    if (!fs.existsSync(source)) {
+    if (!fs.existsSync(sourceFolder)) {
+      resolve(false)
       return
     }
-    if (!fs.existsSync(destination)) {
-      fs.mkdirSync(destination)
+    if (!fs.existsSync(destinationFolder)) {
+      fs.mkdirSync(destinationFolder)
     }
-    const files = fs.readdirSync(source)
+
+    const files = fs.readdirSync(sourceFolder)
     try {
       files.forEach((file) => {
-        const current = path.join(source, file)
-        const target = path.join(destination, file)
+        const current = path.join(sourceFolder, file)
+        const target = path.join(destinationFolder, file)
         if (fs.lstatSync(current).isDirectory()) {
           transferBackupFolder(current, target)
         } else {
@@ -101,7 +104,7 @@ const transferBackupFolder = (source: string, destination: string): Promise<bool
         }
       })
 
-      fs.rmdirSync(source, { recursive: true })
+      fs.rmdirSync(sourceFolder, { recursive: true })
       resolve(true)
     } catch (error) {
       console.error(error)
