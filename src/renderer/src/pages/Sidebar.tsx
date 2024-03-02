@@ -51,7 +51,7 @@ const SideBar = () => {
               <a className={selectedGame === game.name ? "active" : ""}>
                 <div className="avatar">
                   <div className="w-8 rounded">
-                    <IconImage src={path.join("file://", game.thumbnail)} />
+                    {game.thumbnail && <IconImage src={path.join("file://", game.thumbnail)} />}
                   </div>
                 </div>
                 {game.name}

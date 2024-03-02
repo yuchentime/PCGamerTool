@@ -3,7 +3,6 @@ import { IoArrowBack } from "react-icons/io5"
 import { useNavigate } from "react-router"
 const GlobalSettings = ({}) => {
   const navigate = useNavigate()
-  const [autoStatistics, setAutoStatistics] = React.useState(false)
   const [backupDirectory, setBackupDirectory] = React.useState("")
 
   React.useEffect(() => {
