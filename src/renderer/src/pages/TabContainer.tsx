@@ -21,12 +21,6 @@ const TabContainer = () => {
           游戏笔记
         </a>
         <a
-          className={`tab ${tabActive === "satistics" && "tab-active"}`}
-          onClick={() => setTabActive("satistics")}
-        >
-          统计时长
-        </a>
-        <a
           className={`tab ${tabActive === "gameSettings" && "tab-active"}`}
           onClick={() => setTabActive("gameSettings")}
         >

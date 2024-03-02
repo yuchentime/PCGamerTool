@@ -18,7 +18,7 @@ const SettingsHandler = {
   getGlobalSettings: (_) => {
     return new Promise((resolve) => {
       const targetSaveFolder = String(
-        Stores.settings.get(TARGET_SAVE_FOLDER_PREFIX) || app.getAppPath()
+        Stores.settings.get(TARGET_SAVE_FOLDER_PREFIX) || path.join(app.getPath("userData"), "backup")
       )
       resolve({ targetSaveFolder })
     })
@@ -52,7 +52,7 @@ const SettingsHandler = {
         .then((res) => {
           const saveFileDirectory = res.filePaths[0]
           const oldSaveFileFolder = String(
-            Stores.settings.get(TARGET_SAVE_FOLDER_PREFIX) || app.getAppPath()
+            Stores.settings.get(TARGET_SAVE_FOLDER_PREFIX) || app.getPath("userData")
           )
           transferBackupFolder(oldSaveFileFolder, saveFileDirectory).then((result) => {
             if (result) {

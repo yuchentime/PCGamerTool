@@ -31,20 +31,8 @@ const GlobalSettings = ({}) => {
     <div className="flex">
       <div className="items-center text-zinc-600 m-2 p-2">
         <IoArrowBack className="cursor-pointer" size={20} onClick={toBack} />
-        {/* 每60s查询后台进程 */}
-        <div className="flex  mt-10">
-          <h4 className="mr-10 font-bold">自动统计游戏时长</h4>
-          <div className="mr-5">
-            <input
-              type="checkbox"
-              className="toggle"
-              checked={autoStatistics}
-              onChange={() => setAutoStatistics(!autoStatistics)}
-            />
-          </div>
-        </div>
         <div className="flex item-center mt-10">
-          <h4 className="mr-10 font-bold">每日游戏时长上限</h4>
+          <h4 className="mr-10 font-bold">每日游戏上限时长</h4>
           <div className="mr-5">
             <input
               type="number"
@@ -52,6 +40,7 @@ const GlobalSettings = ({}) => {
               className="input input-bordered w-full input-sm"
             />
           </div>
+          <div>剩余30/60</div>
         </div>
         <div className="flex items-center mt-10">
           <h4 className="mr-10 font-bold">备份目录</h4>
