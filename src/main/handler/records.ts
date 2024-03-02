@@ -4,6 +4,7 @@ import { SAVE_FILE_PREFIX, TARGET_SAVE_FOLDER_PREFIX } from "../constants/Settin
 import Stores from "../store/index"
 import { generateRecordId } from "../util/date"
 import * as FileUtil from "../util/file"
+import path from "path"
 
 const RecordsHandler = {
   getSaveRecords: (_, gameId: string) => {
@@ -51,11 +52,10 @@ const RecordsHandler = {
       const targetSaveFolder = Stores.settings.has(TARGET_SAVE_FOLDER_PREFIX)
         ? String(Stores.settings.get(TARGET_SAVE_FOLDER_PREFIX))
         : app.getPath("userData")
-      const gameBackupSaveFolder = targetSaveFolder + "\\" + gameId
+      const gameBackupSaveFolder = path.join(targetSaveFolder, gameId)
 
       const originalFileName = originalFilePath.substring(originalFilePath.lastIndexOf("\\") + 1)
-      const saveRecordFilePath =
-        gameBackupSaveFolder + "\\" + saveRecordId + "\\" + originalFileName
+      const saveRecordFilePath = path.join(gameBackupSaveFolder, saveRecordId, originalFileName)
       if (!fs.existsSync(saveRecordFilePath)) {
         resolve({
           code: -1,
@@ -76,7 +76,7 @@ const RecordsHandler = {
         const targetSaveFolder = Stores.settings.has(TARGET_SAVE_FOLDER_PREFIX)
           ? String(Stores.settings.get(TARGET_SAVE_FOLDER_PREFIX))
           : app.getPath("userData")
-        const gameBackupSaveFolder = targetSaveFolder + "\\" + gameId + "\\" + saveSaveRecordId
+        const gameBackupSaveFolder = path.join(targetSaveFolder, gameId, saveSaveRecordId)
         if (fs.existsSync(gameBackupSaveFolder)) {
           shell.openPath(gameBackupSaveFolder)
           resolve({
@@ -96,14 +96,15 @@ const RecordsHandler = {
         })
       }
     })
-  },
-
+  }
 }
 
 export const createNewSaveRecord = (gameId: string): Promise<string> => {
   const originalFile = String(Stores.settings.get(SAVE_FILE_PREFIX + gameId) || "")
-  const targetSaveFolder =
-    String(Stores.settings.get(TARGET_SAVE_FOLDER_PREFIX) || app.getPath("userData")) + "\\" + gameId
+  const targetSaveFolder = path.join(
+    String(Stores.settings.get(TARGET_SAVE_FOLDER_PREFIX) || app.getPath("userData")),
+    gameId
+  )
   if (!fs.existsSync(targetSaveFolder)) {
     fs.mkdirSync(targetSaveFolder)
   }
@@ -114,7 +115,7 @@ export const createNewSaveRecord = (gameId: string): Promise<string> => {
       return
     }
     const id = generateRecordId()
-    const targetSaveFolderStr = String(targetSaveFolder) + "\\" + id
+    const targetSaveFolderStr = path.join(String(targetSaveFolder), id)
     if (!fs.existsSync(targetSaveFolderStr)) {
       fs.mkdirSync(targetSaveFolderStr)
     }

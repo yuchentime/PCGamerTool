@@ -7,7 +7,6 @@ import {
   TARGET_SAVE_FOLDER_PREFIX
 } from "../constants/SettinsConstant"
 import Stores from "../store/index"
-import {exec} from 'child_process'
 
 const SettingsHandler = {
   getGameSettings: (_, gameId: string) => {

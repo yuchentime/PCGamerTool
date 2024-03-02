@@ -1,10 +1,11 @@
 import fs from 'fs'
+import path from 'path-browserify'
 
 export const copyFileToFoler = (saveFile: string, newSaveFolder: string, newFileName: string) => {
   return new Promise((resolve, reject) => {
     const readStream = fs.createReadStream(saveFile)
-    fs.writeFileSync(newSaveFolder + '\\' + newFileName, '')
-    const writeStream = fs.createWriteStream(newSaveFolder + '\\' + newFileName)
+    fs.writeFileSync(path.join(newSaveFolder, newFileName), '')
+    const writeStream = fs.createWriteStream(path.join(newSaveFolder, newFileName))
     readStream.on('data', (chunk) => {
       writeStream.write(chunk)
     })
