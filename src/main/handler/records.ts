@@ -6,7 +6,7 @@ import { generateRecordId } from "../util/date"
 import * as FileUtil from "../util/file"
 
 const RecordsHandler = {
-  getSaveRecords: (event, gameId: string) => {
+  getSaveRecords: (_, gameId: string) => {
     if (Stores.records.get(gameId)) {
       // @ts-ignores
       const saveRecordList: SaveRecord[] = Stores.records.get(gameId)
@@ -14,7 +14,7 @@ const RecordsHandler = {
     }
     return []
   },
-  saveComment: (event, gameId: string, saveRecordId: string, comment: string): Promise<any> => {
+  saveComment: (_, gameId: string, saveRecordId: string, comment: string): Promise<any> => {
     return new Promise((resolve, reject) => {
       try {
         // @ts-ignores
@@ -36,8 +36,8 @@ const RecordsHandler = {
       }
     })
   },
-  recoverySaveFile: (event, gameId: string, saveRecordId: string) => {
-    return new Promise((resolve, reject) => {
+  recoverySaveFile: (_, gameId: string, saveRecordId: string) => {
+    return new Promise((resolve) => {
       const originalFilePath = Stores.settings.has(SAVE_FILE_PREFIX + gameId)
         ? String(Stores.settings.get(SAVE_FILE_PREFIX + gameId))
         : ""
@@ -70,8 +70,8 @@ const RecordsHandler = {
       })
     })
   },
-  openSaveFileFolder: (event, gameId: string, saveSaveRecordId: string): Promise<any> => {
-    return new Promise((resolve, reject) => {
+  openSaveFileFolder: (_, gameId: string, saveSaveRecordId: string): Promise<any> => {
+    return new Promise((resolve) => {
       try {
         const targetSaveFolder = Stores.settings.has(TARGET_SAVE_FOLDER_PREFIX)
           ? String(Stores.settings.get(TARGET_SAVE_FOLDER_PREFIX))
@@ -96,7 +96,8 @@ const RecordsHandler = {
         })
       }
     })
-  }
+  },
+  
 }
 
 export const createNewSaveRecord = (gameId: string): Promise<string> => {

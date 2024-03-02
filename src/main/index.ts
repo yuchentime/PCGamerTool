@@ -4,6 +4,8 @@ import {
   app,
   globalShortcut,
   ipcMain,
+  nativeImage,
+  protocol,
   shell
 } from "electron"
 import { join } from "path"
@@ -17,6 +19,8 @@ import { registerShortcut } from "./shortcut"
 function createWindow(): BrowserWindow {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
+    title: "PC Gamer Tool",
+    // icon: nativeImage.createFromPath("./resources/icon.png"),
     width: 1200,
     height: 800,
     show: false,
@@ -24,7 +28,11 @@ function createWindow(): BrowserWindow {
     ...(process.platform === "linux" ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, "../preload/index.js"),
-      sandbox: false
+      sandbox: false,
+      nodeIntegration: true,
+      contextIsolation: false,
+      defaultEncoding: 'utf-8',
+      webSecurity: false
     }
   })
 
@@ -47,11 +55,14 @@ function createWindow(): BrowserWindow {
   return mainWindow
 }
 
+protocol.registerSchemesAsPrivileged([
+  { scheme: "file", privileges: { secure: true, standard: true, bypassCSP: true } }
+])
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-
   // Set app user model id for windows
   electronApp.setAppUserModelId("com.electron")
 

@@ -41,7 +41,7 @@ const SettingsHandler = {
         })
     })
   },
-  setTargetSaveFolder: (event): Promise<string> => {
+  setTargetSaveFolder: (): Promise<string> => {
     return new Promise((resolve) => {
       dialog
         .showOpenDialog({

@@ -1,10 +1,11 @@
+import IconImage from "@renderer/components/IconImage"
+import path from "path-browserify"
 import React from "react"
 import { NavLink } from "react-router-dom"
 
 const SideBar = () => {
   const [gameList, setGameList] = React.useState<Game[]>([])
   const [selectedGame, setSelectedGame] = React.useState("")
-  const [localImg, setLocalImg] = React.useState("")
 
   React.useEffect(() => {
     updateGameList()
@@ -12,7 +13,6 @@ const SideBar = () => {
     window.electron.ipcRenderer.on("updateGameList", () => {
       updateGameList()
     })
-
   }, [])
 
   const updateGameList = async () => {
@@ -28,17 +28,14 @@ const SideBar = () => {
     <div>
       <ul className="menu w-72 text-base-content">
         {gameList.map((game) => (
-          <NavLink to={`/${game.name}`}>
+          <NavLink to={`/${game.name}`} key={game.name}>
             <li key={game.name} onClick={() => setSelectedGame(game.name)}>
               <a className={selectedGame === game.name ? "active" : ""}>
-                {/* <div className="avatar">
+                <div className="avatar">
                   <div className="w-8 rounded">
-                    <img
-                      src={localImg}
-                      alt={game.name}
-                    />
+                    <IconImage src={path.join("file://", game.thumbnail)} />
                   </div>
-                </div> */}
+                </div>
                 {game.name}
               </a>
             </li>

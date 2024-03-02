@@ -126,6 +126,7 @@ const Records = ({ props }) => {
                       className="w-full cursor-pointer :hover:text-blue"
                       onClick={() => {
                         if (commentDialogRef?.current) {
+                          // @ts-ignore
                           commentDialogRef.current.showModal()
                           setDialogComment(record.comment)
                           setDialogRecordId(record.id)
