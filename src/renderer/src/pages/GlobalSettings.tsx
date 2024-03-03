@@ -23,7 +23,7 @@ const GlobalSettings = ({}) => {
 
   const toBack = () => {
     // 如果是-1，则需要点击两次
-    navigate(-2)
+    navigate(-1)
   }
 
   return (
