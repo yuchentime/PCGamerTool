@@ -1,5 +1,6 @@
 import { BrowserWindow, Menu } from 'electron'
 import GameHandler from './handler/games'
+import {info} from 'electron-log'
 
 export default class MenuBuilder {
   mainWindows: BrowserWindow
@@ -15,6 +16,7 @@ export default class MenuBuilder {
         click: () => {
           GameHandler.importGame().then((gameName) => {
             // 通知页面更新
+            info('updateGameList')
             this.mainWindows.webContents.send('updateGameList', gameName)
           })
         }
@@ -22,6 +24,7 @@ export default class MenuBuilder {
       {
         label: 'Setting',
         click: () => {
+          info('openSetting')
           this.mainWindows.webContents.send('openSetting')
         }
       }

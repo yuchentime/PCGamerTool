@@ -19,8 +19,8 @@ import { registerShortcut } from "./shortcut"
 function createWindow(): BrowserWindow {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    title: "PC Gamer Tool",
-    // icon: nativeImage.createFromPath("./resources/icon.png"),
+    title: "PCGamerTool",
+    icon: nativeImage.createFromPath("./resources/icon.png"),
     width: 1200,
     height: 800,
     show: false,

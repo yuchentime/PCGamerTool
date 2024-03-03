@@ -1,14 +1,16 @@
+import { info } from "electron-log"
 import React from "react"
 import { Outlet, useNavigate } from "react-router"
-import SideBar from "./pages/Sidebar"
 import useSlicenceHook from "./hooks/useSlicenceHook"
+import SideBar from "./pages/Sidebar"
 
 function App(): JSX.Element {
   const navigate = useNavigate()
 
   React.useEffect(() => {
-    console.count("rendering App")
+    info("rendering App")
     window.electron.ipcRenderer.on("openSetting", () => {
+      info("openSetting")
       navigate("/settings")
     })
 

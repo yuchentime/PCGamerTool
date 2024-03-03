@@ -1,5 +1,5 @@
 appId: com.electron.app
-productName: pc-gamer-tool
+productName: PCGamerTool
 directories:
   buildResources: build
 files:
@@ -12,7 +12,7 @@ files:
 asarUnpack:
   - resources/**
 win:
-  executableName: pc-gamer-tool
+  executableName: PCGamerTool
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
