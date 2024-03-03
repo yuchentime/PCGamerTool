@@ -1,13 +1,5 @@
 import { electronApp, is, optimizer } from "@electron-toolkit/utils"
-import {
-  BrowserWindow,
-  app,
-  globalShortcut,
-  ipcMain,
-  nativeImage,
-  protocol,
-  shell
-} from "electron"
+import { BrowserWindow, app, globalShortcut, ipcMain, protocol, shell } from "electron"
 import { join } from "path"
 import icon from "../../resources/icon.png?asset"
 import GameHandler from "./handler/games"
@@ -20,7 +12,6 @@ function createWindow(): BrowserWindow {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     title: "PCGamerTool",
-    icon: nativeImage.createFromPath("./resources/icon.png"),
     width: 1200,
     height: 800,
     show: false,

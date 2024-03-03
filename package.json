@@ -1,7 +1,7 @@
 {
   "name": "PCGamerTool",
   "version": "1.0.0",
-  "description": "An Electron application with React and TypeScript",
+  "description": "A Tool for all of pc gamer.",
   "main": "./out/main/index.js",
   "author": "heyuchen",
   "homepage": "https://electron-vite.org",
@@ -48,7 +48,7 @@
     "autoprefixer": "^10.4.17",
     "daisyui": "^4.7.2",
     "electron": "^28.2.0",
-    "electron-builder": "^24.13.3",
+    "electron-builder": "^24.9.1",
     "electron-vite": "^2.0.0",
     "eslint": "^8.56.0",
     "eslint-plugin-react": "^7.33.2",
