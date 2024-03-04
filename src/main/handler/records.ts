@@ -5,6 +5,7 @@ import Stores from "../store/index"
 import { generateRecordId } from "../util/date"
 import * as FileUtil from "../util/file"
 import path from "path"
+import { getScreenshot } from "../util/capture"
 
 const RecordsHandler = {
   getSaveRecords: (_, gameId: string) => {
@@ -99,7 +100,7 @@ const RecordsHandler = {
   }
 }
 
-export const createNewSaveRecord = (gameId: string): Promise<string> => {
+export const createNewSaveRecord = async (gameId: string): Promise<any> => {
   const originalFile = String(Stores.settings.get(SAVE_FILE_PREFIX + gameId) || "")
   const targetSaveFolder = path.join(
     String(Stores.settings.get(TARGET_SAVE_FOLDER_PREFIX) || app.getPath("userData")),
@@ -109,43 +110,59 @@ export const createNewSaveRecord = (gameId: string): Promise<string> => {
     fs.mkdirSync(targetSaveFolder)
   }
 
-  return new Promise((resolve, reject) => {
-    if (!fs.existsSync(originalFile)) {
-      reject("file is not exists")
-      return
+  if (!fs.existsSync(originalFile)) {
+    return {
+      code: -1,
+      msg: "no save file"
     }
-    const id = generateRecordId()
-    const targetSaveFolderStr = path.join(String(targetSaveFolder), id)
-    if (!fs.existsSync(targetSaveFolderStr)) {
-      fs.mkdirSync(targetSaveFolderStr)
+  }
+  const id = generateRecordId()
+  const targetSaveFolderStr = path.join(String(targetSaveFolder), id)
+  if (!fs.existsSync(targetSaveFolderStr)) {
+    fs.mkdirSync(targetSaveFolderStr)
+  }
+
+  // TODO 还要处理显示屏问题，可能存在多个显示器
+  const screenshotPath = path.join(String(targetSaveFolder), "_screenshots")
+  if (!fs.existsSync(screenshotPath)) {
+    fs.mkdirSync(screenshotPath)
+  }
+
+  console.log("screenshotPath: ", screenshotPath)
+
+  const screenshotFilePath = path.join(screenshotPath, id + ".png")
+  const screenshotFileBuffer = await getScreenshot()
+  if (screenshotFileBuffer) {
+    fs.writeFileSync(screenshotFilePath, screenshotFileBuffer)
+  }
+
+  const fileName = originalFile.substring(originalFile.lastIndexOf("\\") + 1)
+  const res = await FileUtil.copyFileToFoler(originalFile, targetSaveFolderStr, fileName)
+  if (res && res === "ok") {
+    // generate a new save record
+    const saveFileRecord = {
+      id: id,
+      gameId: gameId,
+      createdAt: Date.now(),
+      screenshot: screenshotFilePath,
+      comment: ""
     }
-    const fileName = originalFile.substring(originalFile.lastIndexOf("\\") + 1)
-    FileUtil.copyFileToFoler(originalFile, targetSaveFolderStr, fileName)
-      ?.then((res) => {
-        if (res === "ok") {
-          // generate a new save record
-          const saveFileRecord = {
-            id: id,
-            gameId: gameId,
-            createdAt: Date.now(),
-            comment: ""
-          }
-          if (Stores.records.get(gameId)) {
-            // @ts-ignores
-            const saveRecordList: SaveRecord[] = Stores.records.get(gameId)
-            Stores.records.set(gameId, [...saveRecordList, saveFileRecord])
-          } else {
-            Stores.records.set(gameId, [saveFileRecord])
-          }
-          resolve("ok")
-        }
-      })
-      .catch((err) => {
-        console.error(err)
-        reject("failed")
-      })
-    resolve("")
-  })
+    if (Stores.records.get(gameId)) {
+      // @ts-ignores
+      const saveRecordList: SaveRecord[] = Stores.records.get(gameId)
+      Stores.records.set(gameId, [...saveRecordList, saveFileRecord])
+    } else {
+      Stores.records.set(gameId, [saveFileRecord])
+    }
+    return {
+      code: 0,
+      msg: "success"
+    }
+  }
+  return {
+    code: -1,
+    msg: "Failed"
+  }
 }
 
 export default RecordsHandler

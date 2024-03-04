@@ -1,10 +1,14 @@
 const RightClickMenu = ({ props }) => {
   const { gameId, x, y } = props
 
+  const startGame = () => {
+    // @ts-ignores
+    window.api.startGame(gameId)
+  }
   return (
     <div className={`absolute z-10 text-slate-900`} style={{ left: x, top: y }}>
       <ul className="menu bg-base-200 w-48 rounded-box">
-        <li>
+        <li onClick={startGame}>
           <a>
             <svg
               xmlns="http://www.w3.org/2000/svg"

@@ -21,10 +21,6 @@ const GameSettings = ({ props }) => {
     })
   }
 
-  const startGame = () => {
-    // @ts-ignores
-    window.api.startGame(gameId)
-  }
 
   return (
     <>
@@ -35,9 +31,6 @@ const GameSettings = ({ props }) => {
           更改地址
         </button>
       </div>
-      <button className="btn btn-sm mt-10" onClick={startGame}>
-        打开游戏
-      </button>
     </>
   )
 }

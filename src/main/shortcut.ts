@@ -7,10 +7,17 @@ export const registerShortcut = (mainWindows: BrowserWindow) => {
     checkRunningGame().then((name) => {
       if (!name) {
         console.log("no running game")
-        name = "DarkSoulsII"
+        name = "eldenring"
       }
-      RecordsHandler.createNewSaveRecord(name)
-      mainWindows.webContents.send("notification", "成功创建新存档！")
+      RecordsHandler.createNewSaveRecord(name).then((res) => {
+        if (!res) {
+          mainWindows.webContents.send("notification", "创建新存档失败！")
+        } else if (res.code === 0) {
+          mainWindows.webContents.send("notification", "创建新存档成功！")
+        } else {
+          mainWindows.webContents.send("notification", res.msg)
+        }
+      })
     })
   })
 }
