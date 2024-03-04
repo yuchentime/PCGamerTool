@@ -74,7 +74,7 @@ const SettingsHandler = {
     if (games) {
       const game = (games as Array<any>).find((item) => item.name === gameId)
       if (game) {
-        console.log("startGame: ", game)
+        Stores.games.set(GAMES_PREFIX, game)
         shell.openPath(game.lanunchPath)
       }
     }

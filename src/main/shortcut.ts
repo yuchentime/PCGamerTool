@@ -7,8 +7,10 @@ export const registerShortcut = (mainWindows: BrowserWindow) => {
     checkRunningGame().then((name) => {
       if (!name) {
         console.log("no running game")
-        name = "eldenring"
+        return
       }
+      console.log("current running game: ", name)
+
       RecordsHandler.createNewSaveRecord(name).then((res) => {
         if (!res) {
           mainWindows.webContents.send("notification", "创建新存档失败！")
