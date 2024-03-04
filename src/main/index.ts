@@ -1,5 +1,5 @@
 import { electronApp, is, optimizer } from "@electron-toolkit/utils"
-import { BrowserWindow, app, globalShortcut, ipcMain, protocol, shell } from "electron"
+import { BrowserWindow, Menu, Tray, app, globalShortcut, ipcMain, nativeImage, protocol, shell } from "electron"
 import { join } from "path"
 import icon from "../../resources/icon.png?asset"
 import GameHandler from "./handler/games"

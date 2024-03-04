@@ -1,16 +1,16 @@
-import GameSettings from './GameSettings'
-import Records from './Records'
+import GameSettings from "./GameSettings"
+import Records from "./Records"
 
 const TabDispatcher = ({ props }) => {
   const { tab } = props
-  console.log('tab: ', tab)
+  console.log("tab: ", tab)
   let tabNode: React.ReactElement
   switch (tab) {
-    case 'records':
-      tabNode = <Records props={props} />
+    case "records":
+      tabNode = <Records props={props} key="records" />
       break
-    case 'gameSettings':
-      tabNode = <GameSettings props={props} />
+    case "gameSettings":
+      tabNode = <GameSettings props={props} key="gameSettings" />
       break
     default:
       tabNode = <>Not supported by now.</>

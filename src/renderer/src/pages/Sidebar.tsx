@@ -1,4 +1,5 @@
 import IconImage from "@renderer/components/IconImage"
+import RightClickMenu from "@renderer/components/RightClickMenu"
 import path from "path-browserify"
 import React from "react"
 import { NavLink, useNavigate } from "react-router-dom"
@@ -6,6 +7,7 @@ import { NavLink, useNavigate } from "react-router-dom"
 const SideBar = () => {
   const [gameList, setGameList] = React.useState<Game[]>([])
   const [selectedGame, setSelectedGame] = React.useState("")
+  const [contextMenuProps, setContextMenuProps] = React.useState({})
   const navigate = useNavigate()
 
   React.useEffect(() => {
@@ -21,6 +23,18 @@ const SideBar = () => {
         setGameList(games)
       })
     })
+
+    const handleClick = () => {
+      setContextMenuProps({ visiable: false })
+    }
+
+    document.addEventListener("click", handleClick)
+
+    // To prevent the Memory Leak
+    return () => {
+      document.removeEventListener("click", handleClick)
+      window.electron.ipcRenderer.removeAllListeners("updateGameList")
+    }
   }, [])
 
   const updateGameList = (): Promise<Game[]> => {
@@ -42,12 +56,22 @@ const SideBar = () => {
     })
   }
 
+  const handleRightClickMenu = (e: React.MouseEvent, gameId: string) => {
+    e.preventDefault()
+    const contextMenuTop = e.currentTarget.clientHeight + e.currentTarget.offsetTop - 10
+    setContextMenuProps({ x: e.clientX, y: contextMenuTop, gameId: gameId, visiable: true })
+  }
+
   return (
-    <div>
-      <ul className="menu w-72 text-base-content">
+    <div className="flex">
+      <ul id="gameList" className="menu w-72 text-base-content">
         {gameList.map((game) => (
-          <NavLink to={`/${game.name}`} key={game.name}>
-            <li key={game.name} onClick={() => setSelectedGame(game.name)}>
+          <NavLink to={`/${game.name}`}>
+            <li
+              key={game.name}
+              onClick={() => setSelectedGame(game.name)}
+              onContextMenu={(event) => handleRightClickMenu(event, game.name)}
+            >
               <a className={selectedGame === game.name ? "active" : ""}>
                 <div className="avatar">
                   <div className="w-8 rounded">
@@ -60,6 +84,7 @@ const SideBar = () => {
           </NavLink>
         ))}
       </ul>
+      {contextMenuProps?.visiable && <RightClickMenu props={{ ...contextMenuProps }} />}
     </div>
   )
 }
